@@ -133,8 +133,17 @@
     dossier_soin.select(".print_prescription")[0].removeClassName("not-printable").setStyle({pageBreakAfter: "always"});
     {{/if}}
     dossier_soin.select(".print_tasks")[0].removeClassName("not-printable").setStyle({pageBreakAfter: "auto"});
-    dossier_soin.select(".print_transmission")[0].removeClassName("not-printable").setStyle({pageBreakAfter: "auto"});
-    dossier_soin.select(".print_observation")[0].removeClassName("not-printable").setStyle({pageBreakAfter: "auto"});
+
+    var print_transmissions = dossier_soin.select(".print_transmission")[0];
+    if (print_transmissions) {
+      print_transmissions.removeClassName("not-printable").setStyle({pageBreakAfter: "auto"});
+    }
+
+    var print_observations = dossier_soin.select(".print_observation")[0];
+    if (print_observations) {
+      print_observations.removeClassName("not-printable").setStyle({pageBreakAfter: "auto"});
+    }
+
     dossier_soin.select(".print_constante")[0].removeClassName("not-printable").setStyle({pageBreakAfter: "auto"});
   };
 </script>
