@@ -139,7 +139,7 @@
       </td>
     {{/if}}
     <td class="text">
-      {{mb_include module=hospi template=inc_placement_sejour sejour=$_operation->_ref_sejour}}
+      {{mb_include module=hospi template=inc_placement_sejour sejour=$_operation->_ref_sejour which="curr"}}
     </td>
     {{if $isbloodSalvageInstalled}}
       {{assign var=salvage value=$_operation->_ref_blood_salvage}}

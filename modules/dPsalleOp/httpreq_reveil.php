@@ -182,10 +182,10 @@ foreach ($listOperations as $op) {
       $nb_sorties_non_realisees++;
     }
 
-    $sejour->loadRefsAffectations();
-    if ($sejour->_ref_first_affectation->_id) {
-      $sejour->_ref_first_affectation->loadRefLit();
-      $sejour->_ref_first_affectation->_ref_lit->loadCompleteView();
+    $sejour->loadRefCurrAffectation(CMbDT::date($date)." ".CMbDT::time());
+    if ($sejour->_ref_curr_affectation->_id) {
+      $sejour->_ref_curr_affectation->loadRefLit();
+      $sejour->_ref_curr_affectation->_ref_lit->loadCompleteView();
     }
   }
 }
