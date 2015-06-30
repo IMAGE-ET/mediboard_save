@@ -45,7 +45,13 @@
         {{mb_value object=$sejour field=sortie_prevue}}
       {{/if}}
       <span id="atcd_allergies">
-        {{mb_include module=soins template=inc_antecedents_allergies patient_guid=$patient->_guid dossier_medical=$patient->_ref_dossier_medical}}
+        {{assign var=dossier_medical_sejour value=$sejour->_ref_dossier_medical}}
+        {{if $dossier_medical_sejour}}
+          {{assign var=antecedents_sejour value=$dossier_medical_sejour->_ref_antecedents_by_type}}
+        {{else}}
+          {{assign var=antecedents_sejour value=0}}
+        {{/if}}
+        {{mb_include module=soins template=inc_antecedents_allergies patient_guid=$patient->_guid dossier_medical=$patient->_ref_dossier_medical sejour_id=$sejour>_id}}
       </span>
     </th>
   </tr>

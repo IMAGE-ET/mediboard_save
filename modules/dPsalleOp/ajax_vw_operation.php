@@ -122,8 +122,10 @@ if ($selOp->_id) {
 
   $sejour = $selOp->_ref_sejour;
 
-  $sejour->loadRefDossierMedical();
-  $sejour->_ref_dossier_medical->loadRefsBack();
+  $dossier_sejour = $sejour->loadRefDossierMedical();
+  $dossier_sejour->loadRefsBack();
+  $dossier_sejour->loadRefsAntecedents();
+  $dossier_sejour->countAntecedents();
   $sejour->loadRefsConsultAnesth();
   $sejour->_ref_consult_anesth->loadRefsFwd();
   $sejour->loadRefCurrAffectation();
