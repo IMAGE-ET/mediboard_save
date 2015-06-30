@@ -158,10 +158,15 @@ showEtabEntreeTransfert = function (mode) {
               <th>{{mb_label object=$rpu field="_entree"}}</th>
               <td>{{mb_value object=$rpu field="_entree"}}</td>
             </tr>
-            
+
             <tr>
-              <th>{{mb_label object=$rpu field="ccmu"}}</th>
-              <td>{{mb_field object=$rpu field="ccmu" canNull=false emptyLabel="Choose" onchange="this.form.onsubmit();"}}</td>
+              {{assign var=notNull value=""}}
+              {{if "CAppUI::conf"|static_call:"dPurgences Display check_ccmu":"CGroups-$g" == "2"}}
+                {{assign var=notNull value="notNull"}}
+              {{/if}}
+
+              <th>{{mb_label object=$rpu field="ccmu" class=$notNull}}</th>
+              <td>{{mb_field object=$rpu field="ccmu" class=$notNull emptyLabel="Choose" onchange="this.form.onsubmit();"}}</td>
             </tr>
             
             <tr> 
@@ -300,8 +305,13 @@ showEtabEntreeTransfert = function (mode) {
           <input type="hidden" name="_bind_sejour" value="1" />
           <table class="layout" style="width: 100%">
             <tr>
-              <th style="width: 120px;">{{mb_label object=$rpu field="gemsa"}}</th>
-              <td>{{mb_field object=$rpu field="gemsa" canNull=false emptyLabel="Choose" onchange="this.form.onsubmit();"}}</td>
+              {{assign var=notNull value=""}}
+              {{if "CAppUI::conf"|static_call:"dPurgences Display check_gemsa":"CGroups-$g" == "2"}}
+                {{assign var=notNull value="notNull"}}
+              {{/if}}
+
+              <th style="width: 120px;">{{mb_label object=$rpu field="gemsa" class=$notNull}}</th>
+              <td>{{mb_field object=$rpu field="gemsa" class=$notNull emptyLabel="Choose" onchange="this.form.onsubmit();"}}</td>
             </tr>          
             
             {{if $conf.dPurgences.old_rpu == "1"}}

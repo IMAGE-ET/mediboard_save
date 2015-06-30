@@ -1,6 +1,11 @@
 <script>
 autoriserSortie = function(value){
   var form = getForm('editSortieAutorise');
+
+  if (!checkForm(getForm('editRPU'))) {
+    return false;
+  }
+
   form.elements.sortie_autorisee.value = value;
   onSubmitFormAjax(getForm('editSejour'), function(){
     submitRPU();
@@ -8,6 +13,10 @@ autoriserSortie = function(value){
 };
 
 autoriserEffectuerSortie = function() {
+  if (!checkForm(getForm('editRPU'))) {
+    return false;
+  }
+
   getForm('editSortieAutorise').elements.sortie_autorisee.value = 1;
   return onSubmitFormAjax(getForm('editSejour'), function(){
     {{if $conf.dPurgences.valid_cotation_sortie_reelle}}
