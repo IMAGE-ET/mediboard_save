@@ -2114,6 +2114,11 @@ class CSetupsystem extends CSetup {
                 ADD INDEX (`category_id`);";
     $this->addQuery($query);
 
-    $this->mod_version = "1.1.90";
+    $this->makeRevision("1.1.90");
+    $query = "ALTER TABLE `ex_class_message`
+                ADD `description` TEXT;";
+    $this->addQuery($query);
+
+    $this->mod_version = "1.1.91";
   }
 }

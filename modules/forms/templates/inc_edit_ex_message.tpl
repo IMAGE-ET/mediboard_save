@@ -49,6 +49,12 @@ Main.add(function(){
         </div>
       </td>
     </tr>
+    <tr>
+      <th>{{mb_label object=$ex_message field=description}}</th>
+      <td colspan="3">
+        {{mb_field object=$ex_message field=description}}
+      </td>
+    </tr>
 
     <tr>
       <th>{{mb_label object=$ex_message field=predicate_id}}</th>

@@ -122,7 +122,7 @@ div.ex-message-title {
 }
 
 .ex-message {
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 span.ex-message-title-spacer {

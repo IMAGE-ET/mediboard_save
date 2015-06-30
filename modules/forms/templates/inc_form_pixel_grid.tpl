@@ -40,7 +40,7 @@
       {{* ----- MESSAGES ----- *}}
       {{foreach from=$_group->_ref_root_messages item=_message}}
         <div class="resizable {{if $_message->_no_size}} no-size {{/if}} draggable-message" id="message-{{$_message->_guid}}"
-             style="left:{{$_message->coord_left}}px; top:{{$_message->coord_top}}px; width:{{$_message->coord_width}}px; height:{{$_message->coord_height}}px; pointer-events: none;">
+             style="left:{{$_message->coord_left}}px; top:{{$_message->coord_top}}px; width:{{$_message->coord_width}}px; height:{{$_message->coord_height}}px; {{if !$_message->description}}pointer-events: none;{{/if}}">
           {{mb_include module=forms template=inc_ex_message}}
         </div>
       {{/foreach}}
@@ -107,7 +107,7 @@
       {{* ----- MESSAGES ----- *}}
       {{foreach from=$_group->_ref_root_messages item=_message}}
         <div class="resizable {{if $_message->_no_size}} no-size {{/if}} draggable-message" id="message-{{$_message->_guid}}"
-             style="left:{{$_message->coord_left}}px; top:{{$_message->coord_top}}px; width:{{$_message->coord_width}}px; height:{{$_message->coord_height}}px; pointer-events: none;">
+             style="left:{{$_message->coord_left}}px; top:{{$_message->coord_top}}px; width:{{$_message->coord_width}}px; height:{{$_message->coord_height}}px; {{if !$_message->description}}pointer-events: none;{{/if}}">
           {{mb_include module=forms template=inc_ex_message}}
         </div>
       {{/foreach}}

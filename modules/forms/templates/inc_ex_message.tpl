@@ -9,10 +9,10 @@
 {{/foreach}}
 
 {{if $_message->type == "title"}}
-  <div class="ex-message-title" style="{{$_style}}">
+  <div class="ex-message-title" style="{{$_style}}" {{if $_message->description}} title="{{$_message->description}}" {{/if}}>
     {{$_message->text}}
   </div>
   <span class="ex-message-title-spacer">&nbsp;</span>
 {{else}}
-  <div class="ex-message small-{{$_message->type}}" style="{{$_style}}">{{$_message->text}}</div>
+  <div class="ex-message small-{{$_message->type}}" style="{{$_style}}" {{if $_message->description}} title="{{$_message->description}}" {{/if}}>{{$_message->text}}</div>
 {{/if}}

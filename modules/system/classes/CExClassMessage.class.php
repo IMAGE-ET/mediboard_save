@@ -19,7 +19,8 @@ class CExClassMessage extends CMbObject {
   
   public $title;
   public $text;
-  
+  public $description;
+
   public $coord_title_x;
   public $coord_title_y;
   public $coord_text_x;
@@ -60,7 +61,8 @@ class CExClassMessage extends CMbObject {
     
     $props["title"]       = "str";
     $props["text"]        = "text notNull";
-    
+    $props["description"] = "text";
+
     $props["coord_title_x"] = "num min|0 max|100";
     $props["coord_title_y"] = "num min|0 max|100";
     $props["coord_text_x"] = "num min|0 max|100";
