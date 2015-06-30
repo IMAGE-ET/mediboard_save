@@ -20,6 +20,7 @@ $directory    = CValue::postOrSession("directory");
 $all_prats    = CValue::postOrSession("all_prats");
 $ignore_files = CValue::postOrSession("ignore_files");
 $generate_pdfpreviews = CValue::postOrSession("generate_pdfpreviews");
+$date_min     = CValue::postOrSession("date_min");
 
 $praticien = new CMediusers();
 $praticiens = $praticien->loadPraticiens();
@@ -37,4 +38,5 @@ $smarty->assign("start", $start);
 $smarty->assign("directory", $directory);
 $smarty->assign("ignore_files", $ignore_files);
 $smarty->assign("generate_pdfpreviews", $generate_pdfpreviews);
+$smarty->assign("date_min", $date_min);
 $smarty->display("vw_export_patients.tpl");

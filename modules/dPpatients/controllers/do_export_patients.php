@@ -20,6 +20,7 @@ $start        = (int)CValue::post("start");
 $directory    = CValue::post("directory");
 $ignore_files = CValue::post("ignore_files");
 $generate_pdfpreviews = CValue::post("generate_pdfpreviews");
+$date_min     = CValue::post("date_min");
 
 if (!$all_prats && !$praticien_id) {
   CAppUI::stepAjax("Veuillez choisir au moins un praticien, ou cocher 'Tous les praticiens'", UI_MSG_WARNING);
@@ -40,6 +41,7 @@ CValue::setSession("start", $start);
 CValue::setSession("directory", $directory);
 CValue::setSession("ignore_files", $ignore_files);
 CValue::setSession("generate_pdfpreviews", $generate_pdfpreviews);
+CValue::setSession("date_min", $date_min);
 
 $step = min($step, 1000);
 
@@ -273,7 +275,7 @@ $order = array(
   "patients.patient_id",
 );
 
-if ($all_prats) {
+if ($all_prats && !$date_min) {
   $limit = "$start, $step";
   /** @var CPatient[] $patients */
   $patients = $patient->loadList(null, $order, $limit);
@@ -289,7 +291,13 @@ else {
   );
 
   $where_consult                         = array();
-  $where_consult["plageconsult.chir_id"] = $ds->prepareIn($praticien_id);
+
+  if (!$all_prats) {
+    $where_consult["plageconsult.chir_id"] = $ds->prepareIn($praticien_id);
+  }
+  if ($date_min) {
+    $where_consult["plageconsult.date"] = $ds->prepare(">= ?", $date_min);
+  }
 
   $patient_ids_consult = $patient->loadIds($where_consult, $order, null, "patients.patient_id", $ljoin_consult);
 
@@ -298,7 +306,12 @@ else {
   );
 
   $where_sejour                        = array();
-  $where_sejour["sejour.praticien_id"] = $ds->prepareIn($praticien_id);
+  if (!$all_prats) {
+    $where_sejour["sejour.praticien_id"] = $ds->prepareIn($praticien_id);
+  }
+  if ($date_min) {
+    $where_consult["sejour.sortie"] = $ds->prepare(">= ?", $date_min);
+  }
 
   $patient_ids_sejour = $patient->loadIds($where_sejour, $order, null, "patients.patient_id", $ljoin_sejour);
 
@@ -309,14 +322,14 @@ else {
 
   $patient_ids = array_slice($patient_ids, $start, $step);
 
-  $patient_count = count($patients);
-
   $where = array(
     "patient_id" => $patient->getDS()->prepareIn($patient_ids),
   );
 
   /** @var CPatient[] $patients */
   $patients = $patient->loadList($where);
+
+  $patient_count = count($patients);
 }
 
 CAppUI::stepAjax("%d patients à exporter", UI_MSG_OK, $patient_total);

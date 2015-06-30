@@ -54,6 +54,9 @@
     var sejourForm = getForm("export-sejours-form");
     Calendar.regField(sejourForm.date_min);
     Calendar.regField(sejourForm.date_max);
+
+    var patientForm = getForm("export-patients-form");
+    Calendar.regField(patientForm.date_min);
   })
 </script>
 
@@ -205,6 +208,15 @@
               </th>
               <td>
                 <input type="checkbox" name="generate_pdfpreviews" value="1" {{if $generate_pdfpreviews}}checked{{/if}} />
+              </td>
+            </tr>
+
+            <tr>
+              <th>
+                <label for="date_min">Date de départ</label>
+              </th>
+              <td colspan="5">
+                <input type="hidden" name="date_min" value="{{$date_min}}" />
               </td>
             </tr>
 

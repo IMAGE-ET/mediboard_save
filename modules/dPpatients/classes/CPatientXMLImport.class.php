@@ -39,6 +39,8 @@ class CPatientXMLImport extends CMbXMLObjectImport {
 
   protected $files_directory;
 
+  protected $update_data = false;
+
   static $_ignored_classes = array("CGroups", "CMediusers", "CUser", "CService", "CFunctions", "CBlocOperatoire", "CSalle");
 
   /**
@@ -60,7 +62,10 @@ class CPatientXMLImport extends CMbXMLObjectImport {
     if ($idex->_id) {
       $this->imported[$id] = true;
       $this->map[$id] = $idex->loadTargetObject()->_guid;
-      return;
+
+      if (!$this->update_data) {
+        return;
+      }
     }
 
     switch ($_class) {
