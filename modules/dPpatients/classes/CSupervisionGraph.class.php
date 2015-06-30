@@ -271,7 +271,9 @@ class CSupervisionGraph extends CSupervisionTimedEntity {
     $times = array();
     if ($object->_id) {
       list($results, $times) = CObservationResultSet::getResultsFor($object, false);
-      $times = array_combine($times, $times);
+      if (count($times)) {
+        $times = array_combine($times, $times);
+      }
     }
 
     // CSupervisionGraphAxis
