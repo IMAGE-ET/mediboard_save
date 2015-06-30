@@ -402,9 +402,11 @@ class CExObject extends CMbMetaObject implements IPatientRelated, IIndexableObje
   /**
    * Load ExLinks
    *
+   * @param bool $load_complete Lod complete object
+   *
    * @return CExLink[]
    */
-  function loadRefsLinks(){
+  function loadRefsLinks($load_complete = false){
     $where = array(
       "ex_class_id"  => "= '$this->_ex_class_id'",
       "ex_object_id" => "= '$this->ex_object_id'",
@@ -436,6 +438,13 @@ class CExObject extends CMbMetaObject implements IPatientRelated, IIndexableObje
           $_object = $_link->loadTargetObject();
           $this->setAdditionalObject($_object);
           break;
+
+        default:
+          $_object = null;
+      }
+
+      if ($load_complete && $_object) {
+        $_object->loadComplete();
       }
     }
 

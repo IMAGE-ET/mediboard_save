@@ -111,7 +111,7 @@ class CExClassHostField extends CMbObject {
 
     // Links are stored
     if ($ex_object->_id) {
-      $links = $ex_object->loadRefsLinks();
+      $links = $ex_object->loadRefsLinks(true);
 
       // Direct reference
       foreach ($links as $_link) {
