@@ -48,9 +48,20 @@ class CHL7v2EventADTA28 extends CHL7v2EventADT implements CHL7EventADTA05 {
     
     // Next of Kin / Associated Parties
     $this->addNK1s($patient);
-    
-    // Patient Visit
-    $this->addPV1();
 
+    // Build specific segments (i18n)
+    $this->buildI18nSegments($patient);
+  }
+
+  /**
+   * Build i18n segements
+   *
+   * @param CPatient $patient Person
+   *
+   * @see parent::buildI18nSegments()
+   *
+   * @return void
+   */
+  function buildI18nSegments($patient) {
   }
 }

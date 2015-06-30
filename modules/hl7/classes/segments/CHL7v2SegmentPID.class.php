@@ -17,7 +17,6 @@
  */
 
 class CHL7v2SegmentPID extends CHL7v2Segment {
-
   /** @var string */
   public $name    = "PID";
 

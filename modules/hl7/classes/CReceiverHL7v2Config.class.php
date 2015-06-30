@@ -78,6 +78,7 @@ class CReceiverHL7v2Config extends CMbObjectConfig {
   public $send_child_admit;
   public $send_not_master_IPP;
   public $send_not_master_NDA;
+  public $send_insurance;
 
   // Build
   public $build_mode;
@@ -206,7 +207,8 @@ class CReceiverHL7v2Config extends CMbObjectConfig {
         "send_no_facturable",
         "send_a42_onmerge",
         "send_expected_discharge_with_affectation",
-        "send_child_admit"
+        "send_child_admit",
+        "send_insurance"
       )
     ),
 
@@ -328,6 +330,7 @@ class CReceiverHL7v2Config extends CMbObjectConfig {
     $props["send_child_admit"]                         = "bool default|1";
     $props["send_not_master_IPP"]                      = "bool default|1";
     $props["send_not_master_NDA"]                      = "bool default|1";
+    $props["send_insurance"]                           = "bool default|0";
 
     // Build
     $props["build_mode"]                   = "enum list|normal|simple default|normal";

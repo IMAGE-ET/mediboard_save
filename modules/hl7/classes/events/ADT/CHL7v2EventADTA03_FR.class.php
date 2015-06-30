@@ -48,5 +48,13 @@ class CHL7v2EventADTA03_FR extends CHL7v2EventADTA03 {
 
     // Mouvement PMSI
     $this->addZFM($sejour);
+
+    if ($this->_receiver->_configs["send_insurance"]) {
+      // Insurance
+      $this->addIN1($sejour->_ref_patient);
+
+      // Insurance (Additional Information)
+      $this->addIN2($sejour->_ref_patient);
+    }
   }
 }

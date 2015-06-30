@@ -17,10 +17,12 @@
  */
 
 class CHL7v2SegmentIN1 extends CHL7v2Segment {
-
   /** @var string */
   public $name    = "IN1";
-  
+
+  /** @var null */
+  public $set_id;
+
 
   /** @var CPatient */
   public $patient;
@@ -34,17 +36,26 @@ class CHL7v2SegmentIN1 extends CHL7v2Segment {
    */
   function build(CHL7v2Event $event) {
     parent::build($event);
+
+    $message  = $event->message;
+    $receiver = $event->_receiver;
+    $group    = $receiver->loadRefGroup();
+
+    /** @var CPatient $patient */
+    $patient  = $this->patient;
     
     $data = array();
     
-    // IN1-1: Set ID - IN1 (SI) 
-    $data[] = null;
+    // IN1-1: Insured's Employee ID
+    $data[] = $this->set_id;
     
-    // IN1-2: Insurance Plan ID (CE) 
-    $data[] = null;
+    // IN1-2: Insured's Social Security Number
+    $data[] = $this->getIN12($patient);
     
     // IN1-3: Insurance Company ID (CX) (repeating) 
-    $data[] = null;
+    $data[] = array(
+      $patient->code_regime.$patient->caisse_gest.$patient->centre_carte
+    );
     
     // IN1-4: Insurance Company Name (XON) (optional repeating) 
     $data[] = null;
@@ -71,10 +82,10 @@ class CHL7v2SegmentIN1 extends CHL7v2Segment {
     $data[] = null;
     
     // IN1-12: Plan Effective Date (DT) (optional) 
-    $data[] = null;
+    $data[] = $patient->deb_amo;
     
     // IN1-13: Plan Expiration Date (DT) (optional) 
-    $data[] = null;
+    $data[] = $patient->fin_amo;
     
     // IN1-14: Authorization Information (AUI) (optional) 
     $data[] = null;
@@ -82,17 +93,112 @@ class CHL7v2SegmentIN1 extends CHL7v2Segment {
     // IN1-15: Plan Type (IS) (optional) 
     $data[] = null;
     
-    // IN1-16: Name Of Insured (XPN) (optional repeating) 
-    $data[] = null;
+    // IN1-16: Name Of Insured (XPN) (optional repeating)
+    $names = array();
+
+    $mode_identito_vigilance = "light";
+    if ($receiver) {
+      $mode_identito_vigilance = $receiver->_configs["mode_identito_vigilance"];
+    }
+
+    $anonyme = is_numeric($patient->assure_nom);
+
+    $nom    = CPatient::applyModeIdentitoVigilance($patient->assure_nom, false, $mode_identito_vigilance);
+
+    $prenom   = CPatient::applyModeIdentitoVigilance($patient->assure_prenom  , true, $mode_identito_vigilance, $anonyme);
+    $prenom_2 = CPatient::applyModeIdentitoVigilance($patient->assure_prenom_2, true, $mode_identito_vigilance, $anonyme);
+    $prenom_3 = CPatient::applyModeIdentitoVigilance($patient->assure_prenom_3, true, $mode_identito_vigilance, $anonyme);
+    $prenom_4 = CPatient::applyModeIdentitoVigilance($patient->assure_prenom_4, true, $mode_identito_vigilance, $anonyme);
+
+    $prenoms = array($prenom_2, $prenom_3, $prenom_4);
+    CMbArray::removeValue("", $prenoms);
+
+    // Nom usuel
+    $assure_usualname = array(
+      $nom,
+      $prenom,
+      implode(",", $prenoms),
+      null,
+      $patient->assure_civilite,
+      null,
+      // Table 0200
+      // A - Alias Name
+      // B - Name at Birth
+      // C - Adopted Name
+      // D - Display Name
+      // I - Licensing Name
+      // L - Legal Name
+      // M - Maiden Name
+      // N - Nickname /_Call me_ Name/Street Name
+      // P - Name of Partner/Spouse (retained for backward compatibility only)
+      // R - Registered Name (animals only)
+      // S - Coded Pseudo-Name to ensure anonymity
+      // T - Indigenous/Tribal/Community Name
+      // U - Unspecified
+      (is_numeric($nom)) ? "S" : "L",
+      // Table 465
+      // A - Alphabetic (i.e., Default or some single-byte)
+      // I - Ideographic (i.e., Kanji)
+      // P - Phonetic (i.e., ASCII, Katakana, Hiragana, etc.)
+      "A"
+    );
+
+    $assure_birthname = array();
+    // Cas nom de naissance
+    if ($patient->assure_nom_jeune_fille) {
+      $nom_jeune_fille = CPatient::applyModeIdentitoVigilance(
+        $patient->assure_nom_jeune_fille, true, $mode_identito_vigilance, $anonyme
+      );
+
+      $assure_birthname    = $assure_usualname;
+      $assure_birthname[0] = $nom_jeune_fille;
+      // Legal Name devient Display Name
+      $assure_usualname[6] = "D";
+    }
+    $names[] = $assure_usualname;
+
+    if ($patient->assure_nom_jeune_fille && $receiver &&  $receiver->_configs["build_PID_6"] == "none") {
+      $names[] = $assure_birthname;
+    }
+
+    $data[] = $names;
     
     // IN1-17: Insured's Relationship To Patient (CE) (optional) 
-    $data[] = null;
+    $data[] = $patient->qual_beneficiaire;
     
     // IN1-18: Insured's Date Of Birth (TS) (optional) 
-    $data[] = null;
+    $data[] = $patient->assure_naissance;
     
-    // IN1-19: Insured's Address (XAD) (optional repeating) 
-    $data[] = null;
+    // IN1-19: Insured's Address (XAD) (optional repeating)
+    $address = array();
+
+    $linesAdress = explode("\n", $patient->assure_adresse, 2);
+    $address[] = array(
+      CValue::read($linesAdress, 0),
+      str_replace("\n", $message->componentSeparator, CValue::read($linesAdress, 1)),
+      $patient->assure_ville,
+      null,
+      $patient->assure_cp,
+      // Pays INSEE, récupération de l'alpha 3
+      CPaysInsee::getAlpha3($patient->assure_pays_insee),
+      // Table - 0190
+      // B   - Firm/Business
+      // BA  - Bad address
+      // BDL - Birth delivery location (address where birth occurred)
+      // BR  - Residence at birth (home address at time of birth)
+      // C   - Current Or Temporary
+      // F   - Country Of Origin
+      // H   - Home
+      // L   - Legal Address
+      // M   - Mailing
+      // N   - Birth (nee) (birth address, not otherwise specified)
+      // O   - Office
+      // P   - Permanent
+      // RH  - Registry home
+      "H",
+    );
+
+    $data[] = $address;
     
     // IN1-20: Assignment Of Benefits (IS) (optional) 
     $data[] = null;
@@ -182,7 +288,7 @@ class CHL7v2SegmentIN1 extends CHL7v2Segment {
     $data[] = null;
     
     // IN1-49: Insured's ID Number (CX) (optional repeating) 
-    $data[] = null;
+    $data[] = $patient->matricule;
     
     // IN1-50: Signature Code (IS) (optional) 
     $data[] = null;

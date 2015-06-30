@@ -1501,7 +1501,13 @@ class CSetuphl7 extends CSetup {
                 CHANGE `build_PID_18` `build_PID_18` ENUM ('normal','simple', 'sejour_id', 'none') DEFAULT 'normal';";
     $this->addQuery($query);
 
-    $this->mod_version = "1.20";
+    $this->makeRevision("1.20");
+
+    $query = "ALTER TABLE `receiver_hl7v2_config`
+                ADD `send_insurance` ENUM ('0','1') DEFAULT '0';";
+    $this->addQuery($query);
+
+    $this->mod_version = "1.21";
 
     $query = "SHOW TABLES LIKE 'table_description'";
     $this->addDatasource("hl7v2", $query);

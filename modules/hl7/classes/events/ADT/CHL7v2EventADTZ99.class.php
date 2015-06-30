@@ -94,7 +94,6 @@ class CHL7v2EventADTZ99 extends CHL7v2EventADT implements CHL7EventADTA01 {
    * @return void
    */
   function buildI18nSegments($sejour) {
-    
     // Movement segment only used within the context of the "Historic Movement Management"
     if ($this->_receiver->_configs["iti31_historic_movement"]) {
       $this->addZBE($sejour);

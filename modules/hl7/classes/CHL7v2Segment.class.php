@@ -1412,6 +1412,25 @@ class CHL7v2Segment extends CHL7v2Entity {
   }
 
   /**
+   * Get IN1.2 : type de débiteur
+   *
+   * @param CPatient $patient Patient
+   *
+   * @return string
+   */
+  function getIN12(CPatient $patient) {
+    if ($patient->cmu) {
+      return "CMU";
+    }
+
+    if ($patient->ame) {
+      return "AME";
+    }
+
+    return "AMO";
+  }
+
+  /**
    * Get segment struct
    *
    * @return array

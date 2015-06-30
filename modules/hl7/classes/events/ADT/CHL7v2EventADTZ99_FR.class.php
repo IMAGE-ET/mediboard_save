@@ -65,5 +65,13 @@ class CHL7v2EventADTZ99_FR  extends CHL7v2EventADTZ99 {
     // Complément démographique
     // Si A01, A04, A05, A14
     $this->addZFD($sejour);
+
+    if ($this->_receiver->_configs["send_insurance"]) {
+      // Insurance
+      $this->addIN1($sejour->_ref_patient);
+
+      // Insurance (Additional Information)
+      $this->addIN2($sejour->_ref_patient);
+    }
   }
 }

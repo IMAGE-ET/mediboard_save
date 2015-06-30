@@ -336,4 +336,36 @@ class CHL7v2EventADT extends CHL7v2Event implements CHL7EventADT {
   function addGT1(CPatient $patient = null) {
     
   }
+
+  /**
+   * Represents an HL7 IN1 message segment (Insurance )
+   *
+   * @param CPatient $patient Patient
+   * @param int      $set_id  Set ID
+   *
+   * @return void
+   */
+  function addIN1(CPatient $patient, $set_id = 1) {
+    /** @var CHL7v2SegmentIN1 $IN1 */
+    $IN1 = CHL7v2Segment::create("IN1", $this->message);
+    $IN1->patient = $patient;
+    $IN1->set_id  = $set_id;
+    $IN1->build($this);
+  }
+
+  /**
+   * Represents an HL7 IN2 message segment (Insurance - Additional Information)
+   *
+   * @param CPatient $patient Patient
+   * @param int      $set_id  Set ID
+   *
+   * @return void
+   */
+  function addIN2(CPatient $patient, $set_id = 1) {
+    /** @var CHL7v2SegmentIN2 $IN2 */
+    $IN2 = CHL7v2Segment::create("IN2", $this->message);
+    $IN2->patient = $patient;
+    $IN2->set_id  = $set_id;
+    $IN2->build($this);
+  }
 }

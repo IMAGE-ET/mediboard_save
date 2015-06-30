@@ -37,7 +37,6 @@ class CHL7v2EventADTA01_FR extends CHL7v2EventADTA01 {
    * @return void
    */
   function buildI18nSegments($sejour) {
-    
     // Movement segment
     $this->addZBE($sejour);
     
@@ -52,5 +51,13 @@ class CHL7v2EventADTA01_FR extends CHL7v2EventADTA01 {
     
     // Complément démographique
     $this->addZFD($sejour);
+
+    if ($this->_receiver->_configs["send_insurance"]) {
+      // Insurance
+      $this->addIN1($sejour->_ref_patient);
+
+      // Insurance (Additional Information)
+      $this->addIN2($sejour->_ref_patient);
+    }
   }
 }
