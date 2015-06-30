@@ -34,6 +34,7 @@ class CAlert extends CMbMetaObject {
     $spec = parent::getSpec();
     $spec->table = 'alert';
     $spec->key   = 'alert_id';
+    $spec->loggable = false;
     return $spec;
   }
 
