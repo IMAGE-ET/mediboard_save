@@ -12,7 +12,8 @@
           url.addParam("modal", 1);
           url.modal({
             width: "95%",
-            height: "95%"
+            height: "95%",
+            onClose: function() { document.location.reload(); }
           });
         }
       </script>
