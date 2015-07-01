@@ -36,6 +36,16 @@
             </script>
           </div>
         </fieldset>
+        <fieldset>
+          <legend>{{tr}}CDevisCodage{{/tr}}</legend>
+          {{mb_script module=ccam script=DevisCodage ajax=1}}
+          <script>
+            Main.add(function() {
+              DevisCodage.list('{{$consult->_class}}', '{{$consult->_id}}');
+            });
+          </script>
+          <div id="view-devis"></div>
+        </fieldset>
       {{/if}}
     </td>
   </tr>
