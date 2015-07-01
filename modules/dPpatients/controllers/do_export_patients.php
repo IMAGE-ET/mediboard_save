@@ -310,7 +310,7 @@ else {
     $where_sejour["sejour.praticien_id"] = $ds->prepareIn($praticien_id);
   }
   if ($date_min) {
-    $where_consult["sejour.sortie"] = $ds->prepare(">= ?", $date_min);
+    $where_sejour["sejour.sortie"] = $ds->prepare(">= ?", $date_min);
   }
 
   $patient_ids_sejour = $patient->loadIds($where_sejour, $order, null, "patients.patient_id", $ljoin_sejour);
