@@ -893,7 +893,6 @@ class CFacture extends CMbObject implements IPatientRelated {
    * @return string
    **/
   function getNoControle($noatraiter){
-    if (!is_int($noatraiter)) {return 0;}
     if (!$noatraiter) {
       $noatraiter = $this->du_patient + $this->du_tiers;
     }
