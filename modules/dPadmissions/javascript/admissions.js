@@ -227,7 +227,7 @@ Admissions = {
     document.observe("mb:valider_sortie", callback);
   },
 
-  changeSortie : function (form, sejour_id) {
+  changeSortie : function (form, sejour_id, dest_required_for_transfert) {
     var mode_sortie = $V(form.mode_sortie);
 
     //Affichage des champs complémentaires en fonction du mode de sortie
@@ -247,6 +247,16 @@ Admissions = {
     if (mode_sortie != "transfert") {
       $V(form.etablissement_sortie_id                  , "");
       $V(form.etablissement_sortie_id_autocomplete_view, "");
+      if (dest_required_for_transfert) {
+        form.destination.removeClassName('notNull');
+        form.destination.getLabel().removeClassName('notNull');
+      }
+    }
+    else {
+      if (dest_required_for_transfert) {
+        form.destination.addClassName('notNull');
+        form.destination.getLabel().addClassName('notNull');
+      }
     }
 
     if (mode_sortie != "deces") {

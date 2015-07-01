@@ -51,6 +51,12 @@
   {{/if}}
 {{/if}}
 
+{{if 'dPplanningOp CSejour required_dest_when_transfert'|conf:"CGroups-$g"}}
+  <script type="text/javascript">
+
+  </script>
+{{/if}}
+
 {{if $rpu && $rpu->_id}}
   <form name="{{$form_name}}" method="post"
       onsubmit="return ContraintesRPU.checkObligatory('{{$rpu->_id}}',
@@ -125,10 +131,11 @@
             Admissions.changeSortie(form, '{{$sejour->_id}}');
           })
         </script>
+        {{assign var=required_dest_when_transfer value='dPplanningOp CSejour required_dest_when_transfert'|conf:"CGroups-$g"}}
         {{if $urgences_active}}
-          {{assign var=onchange_mode_sortie value="ContraintesRPU.changeOrientation(this.form);Admissions.changeDestination(this.form);Admissions.changeSortie(this.form, '`$sejour->_id`')"}}
+          {{assign var=onchange_mode_sortie value="ContraintesRPU.changeOrientation(this.form);Admissions.changeDestination(this.form);Admissions.changeSortie(this.form, '`$sejour->_id`', $required_dest_when_transfer)"}}
         {{else}}
-          {{assign var=onchange_mode_sortie value="Admissions.changeDestination(this.form);Admissions.changeSortie(this.form, '`$sejour->_id`')"}}
+          {{assign var=onchange_mode_sortie value="Admissions.changeDestination(this.form);Admissions.changeSortie(this.form, '`$sejour->_id`', $required_dest_when_transfer)"}}
         {{/if}}
         {{assign var=mode_sortie value=$sejour->mode_sortie}}
         {{if $sejour->service_sortie_id}}

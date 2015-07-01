@@ -1,12 +1,12 @@
 <?php
 /**
- * $Id:$
+ * $Id$
  *  
  * @category PlanningOp
  * @package  Mediboard
  * @author   SARL OpenXtrem <dev@openxtrem.com>
  * @license  GNU General Public License, see http://www.gnu.org/licenses/gpl.html
- * @version  $Revision:$
+ * @version  $Revision$
  * @link     http://www.mediboard.org
  */
 
@@ -24,6 +24,7 @@ CConfiguration::register(
           "required_uf_soins"             => "enum list|no|opt|obl localize default|no",
           "ssr_not_collides"              => "bool default|0",
           "use_phone"                     => "bool default|0",
+          "required_dest_when_transfert"  => 'bool default|0',
         ),
         "COperation" => array(
           "multiple_label"                => "bool default|0",
