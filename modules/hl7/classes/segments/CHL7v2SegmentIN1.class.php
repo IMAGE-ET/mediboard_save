@@ -54,7 +54,7 @@ class CHL7v2SegmentIN1 extends CHL7v2Segment {
     
     // IN1-3: Insurance Company ID (CX) (repeating) 
     $data[] = array(
-      $patient->code_regime.$patient->caisse_gest.$patient->centre_carte
+      $patient->code_regime.$patient->caisse_gest.$patient->centre_gest
     );
     
     // IN1-4: Insurance Company Name (XON) (optional repeating) 
@@ -246,7 +246,7 @@ class CHL7v2SegmentIN1 extends CHL7v2Segment {
     $data[] = null;
     
     // IN1-35: Company Plan Code (IS) (optional) 
-    $data[] = null;
+    $data[] = $patient->code_gestion;
     
     // IN1-36: Policy Number (ST) (optional) 
     $data[] = null;
