@@ -4,6 +4,7 @@
 {{mb_script module=patients script=correspondant ajax=true}}
 {{mb_script module=system script=alert ajax=true}}
 {{mb_script module=dPadmissions script=admissions ajax=true}}
+{{mb_script module=planningOp script=planning ajax=true}}
 
 <script>
   modalViewComplete = function(object_guid, title) {
@@ -277,9 +278,10 @@
   <table class="tbl">
     <tr>
       <th class="category" colspan="2">
-              <span style="float: right">
-                <button type="button" class="search" onclick="modalViewComplete('{{$sejour->_guid}}', 'Détail du séjour')">Détail</button>
-              </span>
+        <button type="button" style="float: left;margin-right:-112px;" class="fa fa-calendar" onclick="PlanningSejour.view('{{$sejour->_id}}');">Planning de séjour</button>
+        <span style="float: right;margin-left:-50px;">
+          <button type="button" class="search" onclick="modalViewComplete('{{$sejour->_guid}}', 'Détail du séjour')">Détail</button>
+        </span>
         {{tr}}CSejour{{/tr}}
       </th>
     </tr>
