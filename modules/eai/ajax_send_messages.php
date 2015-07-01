@@ -14,6 +14,7 @@
 CCanDo::checkRead();
 
 $exchange_class = CValue::get("exchange_class");
+$receiver_id    = CValue::get("receiver_id");
 $count          = CValue::get("count", 20);
 $date_min       = CValue::get('date_min');
 $date_max       = CValue::get('date_max');
@@ -34,8 +35,8 @@ if (!($limit = CAppUI::conf("eai max_files_to_process"))) {
 /** @var CExchangeDataFormat $exchange */
 $exchange = new $exchange_class;
 
-$where['sender_id']               = "IS NULL";
-$where['receiver_id']             = "IS NOT NULL";
+$where['sender_id']   = "IS NULL";
+$where['receiver_id'] = $receiver_id ? " = '$receiver_id'" : "IS NOT NULL";
 
 $where['statut_acquittement']     = "IS NULL";
 $where['message_valide']          = "= '1'";
