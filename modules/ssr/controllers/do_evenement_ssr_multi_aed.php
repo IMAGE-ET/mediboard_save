@@ -19,7 +19,10 @@ $csarrs               = CValue::post("csarrs");
 $_csarrs              = CValue::post("_csarrs");
 $remarque             = CValue::post("remarque");
 $type_seance          = CValue::post("_type_seance");
+$sejours_guids        = CValue::post("_sejours_guids");
 $seance_collective_id = CValue::post("seance_collective_id");
+
+$sejours_guids = json_decode(utf8_encode(stripslashes($sejours_guids)), true);
 
 // Codes CdARR
 $codes_cdarrs = array();
@@ -48,7 +51,6 @@ if (is_array($_csarrs)) {
     $codes_csarrs[] = $_code;
   }
 }
-
 
 $_days = CValue::post("_days");
 $_heure_deb = CValue::post("_heure_deb");
@@ -161,38 +163,49 @@ else {
       $msg = $evenement->store();
       CAppUI::displayMsg($msg, "CEvenementSSR-msg-create");
       
-      $evenement_actes_id = $evenement->_id;
+      $evenements_actes_id[] = $evenement->_id;
             
       // Si une seance a ete créée, on crée l'evenement lié a la seance, et on crée les code cdarr sur l'evenement
       if ($type_seance == "collective") {
-        $evt_ssr = new CEvenementSSR();
-        $evt_ssr->sejour_id = $sejour_id;
-        $evt_ssr->prescription_line_element_id = $line_id;
-        $evt_ssr->seance_collective_id = $evenement->_id;
-        $evt_ssr->type_seance          = $type_seance;
-        $msg = $evt_ssr->store();
-        CAppUI::displayMsg($msg, "CEvenementSSR-msg-create");
-        
-        // Si une seance a ete créée, les codes cdarrs seront créés sur l'evenement de la seance
-        $evenement_actes_id = $evt_ssr->_id;    
-      } 
-      
-      // Actes CdARR
-      foreach ($codes_cdarrs as $_code) {
-        $acte = new CActeCdARR();
-        $acte->code = $_code;
-        $acte->evenement_ssr_id = $evenement_actes_id;
-        $msg = $acte->store();
-        CAppUI::displayMsg($msg, "$acte->_class-msg-create");
+        $evenements_actes_id = array();
+        //Cas de la sélection de plusieurs patient pour la séance collective
+        $sejours_guids["CSejour-$sejour_id"]["checked"] = 1;
+        foreach ($sejours_guids as $sejour_guid => $_sejour) {
+          if ($_sejour["checked"] == 1) {
+            $sejour_collectif = CMbObject::loadFromGuid($sejour_guid);
+            $evt_ssr = new CEvenementSSR();
+            $evt_ssr->sejour_id = $sejour_collectif->_id;
+            $evt_ssr->prescription_line_element_id = $line_id;
+            $evt_ssr->seance_collective_id = $evenement->_id;
+            $evt_ssr->type_seance          = $type_seance;
+            $msg = $evt_ssr->store();
+            CAppUI::displayMsg($msg, "CEvenementSSR-msg-create");
+
+            // Si une seance a ete créée, les codes cdarrs seront créés sur l'evenement de la seance
+            $evenements_actes_id[] = $evt_ssr->_id;
+          }
+        }
       }
-  
-      // Actes CsARR
-      foreach ($codes_csarrs as $_code) {
-        $acte = new CActeCsARR();
-        $acte->code = $_code;
-        $acte->evenement_ssr_id = $evenement_actes_id;
-        $msg = $acte->store();
-        CAppUI::displayMsg($msg, "$acte->_class-msg-create");
+
+
+      foreach ($evenements_actes_id as $evenement_actes_id) {
+        // Actes CdARR
+        foreach ($codes_cdarrs as $_code) {
+          $acte = new CActeCdARR();
+          $acte->code = $_code;
+          $acte->evenement_ssr_id = $evenement_actes_id;
+          $msg = $acte->store();
+          CAppUI::displayMsg($msg, "$acte->_class-msg-create");
+        }
+
+        // Actes CsARR
+        foreach ($codes_csarrs as $_code) {
+          $acte = new CActeCsARR();
+          $acte->code = $_code;
+          $acte->evenement_ssr_id = $evenement_actes_id;
+          $msg = $acte->store();
+          CAppUI::displayMsg($msg, "$acte->_class-msg-create");
+        }
       }
     }
   }

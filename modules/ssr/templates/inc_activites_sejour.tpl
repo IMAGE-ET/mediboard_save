@@ -1,12 +1,4 @@
-{{* $Id: vw_aed_rpu.tpl 7951 2010-02-01 10:44:08Z lryo $ *}}
-
-{{*
- * @package Mediboard
- * @subpackage dPurgences
- * @version $Revision: 7951 $
- * @author SARL OpenXtrem
- * @license GNU General Public License, see http://www.gnu.org/licenses/gpl.html
-*}}
+{{mb_script module=ssr script=seance_collective ajax=1}}
 
 <script>
 countCodesCsarr = function() {
@@ -62,6 +54,7 @@ selectElement = function(line_id){
 
   // Deselection de tous les codes
   removeCodes();
+  $V(oFormEvenementSSR._sejours_guids, '');
 
   // Mise en evidence des elements dans les plannings
   addBorderEvent();
@@ -118,6 +111,18 @@ refreshSelectSeances = function(){
     $('seances').hide();
     $V(oFormEvenementSSR.seance_collective_id, '');
   }
+  var button_add_patient = $('seance_collective_add_patient');
+  if ($V(oFormEvenementSSR.type_seance) == 'collective' && $V(oFormEvenementSSR._element_id)) {
+    button_add_patient.show();
+    if (!$V(oFormEvenementSSR._sejours_guids)) {
+      button_add_patient.className = "add";
+      button_add_patient.innerHTML = "Ajouter des patients";
+    }
+  }
+  else {
+    button_add_patient.hide();
+  }
+
 };
 
 hideCodes = function() {
@@ -180,6 +185,7 @@ submitSSR = function(){
     $V(oFormEvenementSSR._heure_fin_da, '');
     $V(oFormEvenementSSR.duree, $V(oFormEvenementSSR._default_duree));
     $V(oFormEvenementSSR.seance_collective_id, '');
+    $V(oFormEvenementSSR._sejours_guids, '');
     $V(oFormEvenementSSR.type_seance, 'dediee');
     $$("input[name='type_seance']").each(function(input){
       input.disabled = false;
@@ -382,6 +388,7 @@ Main.add(function(){
     <input type="hidden" name="_element_id" value="" />
     <input type="hidden" name="_category_id" value="" />
     <input type="hidden" name="_type_seance" value="" />
+    <input type="hidden" name="_sejours_guids" value="" />
 
     <table class="form">
       <tr>
@@ -665,6 +672,7 @@ Main.add(function(){
       </tbody>
       <tr>
         <td colspan="2" class="button">
+          <button type="button" class="add" id="seance_collective_add_patient" style="display:none;" onclick="Seance.selectPatient(this.form)">Ajouter des patients</button>
           <button type="submit" class="submit singleclick">{{tr}}Save{{/tr}}</button>
         </td>
       </tr>
