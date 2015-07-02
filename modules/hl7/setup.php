@@ -1537,7 +1537,7 @@ class CSetuphl7 extends CSetup {
     $this->insertTableEntry("1295", "RPPS_RSPNSBL", "RPPS_RSPNSBL", "rpps", "rpps", "Code RPPS du responsable");
     $this->insertTableEntry("1295", "ADL_RSPNSBL", "ADL_RSPNSBL", "adeli", "adeli", "Code ADELI du responsable");
     $this->insertTableEntry("1295", "CD_SPCLT", "CD_SPCLT", null, null, "Code spécialité B2 du responsable");
-    $this->insertTableEntry("1295", "TLPHN_RSPNSBL", "TLPHN_RSPNSBL", "user_phone", "user_phone", "Téléphone du responsable");
+    $this->insertTableEntry("1295", "TLPHN_RSPNSBL", "TLPHN_RSPNSBL", "_user_phone", "_user_phone", "Téléphone du responsable");
     $this->insertTableEntry("1295", "DT_OVRTR", "DT_OVRTR", "opening_date", "opening_date", "Date d'ouverture");
     $this->insertTableEntry("1295", "DT_FRMTR", "DT_FRMTR", "closing_date", "closing_date", "Date de fermeture");
     $this->insertTableEntry("1295", "DT_ACTVTN", "DT_ACTVTN", "activation_date", "activation_date", "Date d'activation");
