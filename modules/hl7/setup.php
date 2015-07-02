@@ -1531,9 +1531,9 @@ class CSetuphl7 extends CSetup {
     $this->insertTableEntry("1295", "CD", "CD", "code", "code", "Code");
     $this->insertTableEntry("1295", "DSCRPTN", "DSCRPTN", "description", "description", "Description");
     $this->insertTableEntry("1295", "ID_GLBL_RSPNSBL", "ID_GLBL_RSPNSBL", "user_id", "user_id", "Identifiant unique global du responsable");
-    $this->insertTableEntry("1295", "NM_USL_RSPNSBL", "NM_USL_RSPNSBL", "user_last_name", "user_last_name", "Nom usuel du responsable");
+    $this->insertTableEntry("1295", "NM_USL_RSPNSBL", "NM_USL_RSPNSBL", "_user_last_name", "_user_last_name", "Nom usuel du responsable");
     $this->insertTableEntry("1295", "NM_NSNC_RSPNSBL", "NM_NSNC_RSPNSBL", null, null, "Nom de naissance du responsable");
-    $this->insertTableEntry("1295", "PRNM_RSPNSBL", "PRNM_RSPNSBL", "user_first_name", "user_first_name", "Prénom du responsable");
+    $this->insertTableEntry("1295", "PRNM_RSPNSBL", "PRNM_RSPNSBL", "_user_first_name", "_user_first_name", "Prénom du responsable");
     $this->insertTableEntry("1295", "RPPS_RSPNSBL", "RPPS_RSPNSBL", "rpps", "rpps", "Code RPPS du responsable");
     $this->insertTableEntry("1295", "ADL_RSPNSBL", "ADL_RSPNSBL", "adeli", "adeli", "Code ADELI du responsable");
     $this->insertTableEntry("1295", "CD_SPCLT", "CD_SPCLT", null, null, "Code spécialité B2 du responsable");
