@@ -73,6 +73,19 @@ class CHL7v2TableEntry extends CHL7v2TableObject {
   }
 
   /**
+   * Get table values
+   *
+   * @param string $table   Table HL7
+   *
+   * @param bool   $from_mb true
+   *
+   * @return array The table
+   */
+  static function getTable($table, $from_mb = true) {
+    return CHL7v2::getTable($table, $from_mb);
+  }
+
+  /**
    * Get HL7 value
    *
    * @param string $table   Table HL7

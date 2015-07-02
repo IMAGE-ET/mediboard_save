@@ -46,9 +46,12 @@ class CHL7v2Event extends CHL7Event {
     // Traitement sur le mbObject
     $this->object   = $object;
     $this->last_log = $object->loadLastLog();
-    
+
     // Récupération de la version HL7 en fonction du receiver et de la transaction
-    $this->version  = $this->_receiver->_configs[$this->transaction."_HL7_version"];
+    $this->version  = CAppUI::conf("hl7 default_version");
+    if ($version = CMbArray::get($this->_receiver->_configs, $this->transaction."_HL7_version")) {
+      $this->version  = $version;
+    }
     
     // Génération de l'échange
     $this->generateExchange();
