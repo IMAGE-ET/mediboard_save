@@ -15,22 +15,24 @@ CCanDo::checkRead();
 
 $date  = CValue::get("date", CMbDT::date());
 $group = CGroups::loadCurrent();
+
 $sejour = new CSejour();
 $where = array();
 $where["sejour.grossesse_id"] = "IS NOT NULL";
 $where["sejour.entree"] = "<= '$date 23:59:59' ";
 $where["sejour.sortie"] = ">= '$date 00:00:00' ";
 $where["sejour.group_id"] = " = '$group->_id' ";
+$where[] = "sejour.sortie_reelle > '$date " . CMbDT::time() ."' OR sejour.sortie_reelle IS NULL";
 $order = "sejour.entree DESC";
 
 /** @var CSejour[] $listSejours */
 $listSejours = $sejour->loadList($where, $order, null, null, null);
 
-$grossesses = CMbObject::massLoadFwdRef($listSejours, "grossesse_id");
-CMbObject::massLoadFwdRef($grossesses, "parturiente_id");
-$naissances = CMbObject::massLoadBackRefs($grossesses, "naissances");
-$sejours_enfant = CMbObject::massLoadFwdRef($naissances, "sejour_enfant_id");
-CMbObject::massLoadFwdRef($sejours_enfant, "patient_id");
+$grossesses = CStoredObject::massLoadFwdRef($listSejours, "grossesse_id");
+CStoredObject::massLoadFwdRef($grossesses, "parturiente_id");
+$naissances = CStoredObject::massLoadBackRefs($grossesses, "naissances");
+$sejours_enfant = CStoredObject::massLoadFwdRef($naissances, "sejour_enfant_id");
+CStoredObject::massLoadFwdRef($sejours_enfant, "patient_id");
 
 foreach ($listSejours as $_sejour) {
   $grossesse = $_sejour->loadRefGrossesse();
@@ -47,6 +49,8 @@ foreach ($listSejours as $_sejour) {
 }
 
 $smarty = new CSmartyDP();
-$smarty->assign("date", $date);
+
+$smarty->assign("date"       , $date);
 $smarty->assign("listSejours", $listSejours);
+
 $smarty->display("inc_tdb_hospitalisations.tpl");
