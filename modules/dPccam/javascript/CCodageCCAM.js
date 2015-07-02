@@ -30,11 +30,11 @@ CCodageCCAM = {
       acteForm.onsubmit();
     }
     else {
-      CCodageCCAM.checkModificateurs(element, view);
+      CCodageCCAM.checkModificateurs(view, element);
     }
   },
 
-  checkModificateurs: function(input, acte) {
+  checkModificateurs: function(acte, input) {
     var exclusive_modifiers = ['F', 'P', 'S', 'U'];
     var checkboxes = $$('input[data-acte="' + acte + '"].modificateur');
     var nb_checked = 0;
@@ -58,14 +58,16 @@ CCodageCCAM = {
         (exclusive_modifiers.indexOf(exclusive_modifier) != -1 && exclusive_modifiers.indexOf(checkbox.get('code')) != -1 && !checkbox.checked && exclusive_modifier_checked);
     });
 
-    var container = input.up();
-    if (input.checked && container.hasClassName('warning')) {
-      container.removeClassName('warning');
-      container.addClassName('error');
-    }
-    else if (!input.checked && container.hasClassName('error')) {
-      container.removeClassName('error');
-      container.addClassName('warning');
+    if (input) {
+      var container = input.up();
+      if (input.checked && container.hasClassName('warning')) {
+        container.removeClassName('warning');
+        container.addClassName('error');
+      }
+      else if (!input.checked && container.hasClassName('error')) {
+        container.removeClassName('error');
+        container.addClassName('warning');
+      }
     }
   },
 

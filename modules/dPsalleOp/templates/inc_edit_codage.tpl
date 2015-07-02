@@ -61,6 +61,7 @@
               if (oForm) {
                 Calendar.regField(oForm.execution, dates);
               }
+              checkModificateurs('{{$view}}');
             });
           </script>
 

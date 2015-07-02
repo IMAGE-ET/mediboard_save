@@ -660,6 +660,16 @@ class CCodageCCAM extends CMbObject {
         $_modifier->_checked = $checked;
       }
     }
+
+    /* Handle the case where the mods S and U are both prechecked */
+    if (isset($modifiers['S']) && isset($modifiers['U'])) {
+      $modS = &$modifiers['S'];
+      $modU = &$modifiers['U'];
+      if ($modS->_state == 'prechecked' && $modU->_state == 'prechecked') {
+        $modU->_checked = 0;
+        $modU->_state = 'forbidden';
+      }
+    }
   }
 
   /**

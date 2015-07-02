@@ -279,6 +279,11 @@
               {{foreachelse}}
                 <em>{{tr}}None{{/tr}}</em>
               {{/foreach}}
+              <script type="text/javascript">
+                Main.add(function() {
+                  CCodageCCAM.checkModificateurs('{{$view}}');
+                });
+              </script>
             </td>
             <td class="narrow">
               {{if $acte->code_activite == 4}}

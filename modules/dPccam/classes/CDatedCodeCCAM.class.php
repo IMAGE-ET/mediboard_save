@@ -394,7 +394,7 @@ class CDatedCodeCCAM {
       // Cas d'un modificateur normal
       else {
         $_modif->_double = "1";
-        $modificateurs[] = $_modif;
+        $modificateurs[$_modif->code] = $_modif;
       }
     }
 
@@ -426,7 +426,7 @@ class CDatedCodeCCAM {
             $_modif->_checked = null;
             $_modif->_state = null;
             $_modif->_double = strlen($_modif->code);
-            $_phase->_modificateurs[] = $_modif;
+            $_phase->_modificateurs[$_modif->code] = $_modif;
           }
         }
       }
