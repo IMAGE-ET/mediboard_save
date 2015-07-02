@@ -22,7 +22,7 @@
   
   {{if $_lit->_id && !$conf.dPhospi.hide_alertes_temporel}}
     <span style="float: right;">
-      {{if $_lit->_lines|@count > 1 && !$suivi_affectation}}
+      {{if $_lit->_lines|@count && $chambre->_overbooking && !$suivi_affectation}}
         <img src="modules/dPhospi/images/surb.png" title="Collision">
       {{/if}}
       {{if $chambre->_ecart_age > 15}}

@@ -242,6 +242,11 @@ class CLit extends CInternalStructure {
     
     foreach ($this->_ref_affectations as $aff1) {
       foreach ($listAff as $aff2) {
+        /** Pas de collision si les affectations sont liées (mère et bébé) */
+        if (($aff1->parent_affectation_id == $aff2->_id) ||
+            ($aff2->parent_affectation_id == $aff1->_id)) {
+          continue;
+        }
         if ($aff1->affectation_id != $aff2->affectation_id) {
           if ($aff1->collide($aff2)) {
             $this->_overbooking++;
