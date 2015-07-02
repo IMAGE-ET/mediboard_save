@@ -21,27 +21,25 @@ $date_max = CMbDT::date("+".CAppUI::conf("maternite CGrossesse max_check_terme",
 
 $where = array();
 $ljoin = array();
-$where["terme_prevu"] = "BETWEEN '$date_min' AND '$date_max'";
-$where["group_id"] = " = '$group->_id' ";
+$where["grossesse.terme_prevu"] = "BETWEEN '$date_min' AND '$date_max'";
+$where["grossesse.group_id"] = "= '$group->_id' ";
+$where["grossesse.active"] = "= '1'";
 $ljoin["patients"]    = "patients.patient_id = grossesse.parturiente_id";
 
 $grossesse = new CGrossesse();
 /** @var CStoredObject[] $grossesses */
-$grossesses = $grossesse->loadGroupList($where, "terme_prevu ASC, nom ASC", null, null, $ljoin);
+$grossesses = $grossesse->loadList($where, "terme_prevu ASC, nom ASC", null, null, $ljoin);
 
-CMbObject::massLoadFwdRef($grossesses, "parturiente_id");
-CMbObject::massCountBackRefs($grossesses, "sejours");
-$consultations = CMbObject::massLoadBackRefs($grossesses, "consultations");
-CMbObject::massLoadFwdRef($consultations, "plageconsult_id");
+CStoredObject::massLoadFwdRef($grossesses, "parturiente_id");
+CStoredObject::massCountBackRefs($grossesses, "sejours");
+$consultations = CStoredObject::massLoadBackRefs($grossesses, "consultations");
+CStoredObject::massLoadFwdRef($consultations, "plageconsult_id");
 
 /** @var CGrossesse[] $grossesses */
 foreach ($grossesses as $_grossesse) {
   $_grossesse->loadRefParturiente();
   $_grossesse->countRefSejours();
   $_grossesse->loadRefsConsultations(true);
-  foreach ($_grossesse->_ref_consultations as $_consult) {
-    $_consult->loadRefPlageConsult();
-  }
 }
 
 $smarty = new CSmartyDP();
