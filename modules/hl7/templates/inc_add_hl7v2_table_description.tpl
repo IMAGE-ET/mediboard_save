@@ -7,9 +7,7 @@
  * @author SARL OpenXtrem
  * @license GNU General Public License, see http://www.gnu.org/licenses/gpl.html
 *}}
-
-<form name="createHL7TabDescription" action="?m=hl7" method="post" onsubmit="return onSubmitFormAjax(this, { 
-  onComplete : loadTables() });">
+<form name="createHL7TabDescription" action="?m=hl7" method="post" onsubmit="return onSubmitFormAjax(this, loadTables);">
   <input type="hidden" name="m" value="hl7" />
   <input type="hidden" name="@class" value="{{$table_description->_class}}" />
   {{mb_key object=$table_description}}

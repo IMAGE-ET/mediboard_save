@@ -7,7 +7,6 @@
  * @author SARL OpenXtrem
  * @license GNU General Public License, see http://www.gnu.org/licenses/gpl.html
 *}}
-
 <script>
   function addHL7v2TableDescription() {
     var url = new Url("hl7", "ajax_add_hl7v2_table_description");
@@ -19,10 +18,11 @@
      element.up('tr').addUniqueClassName('selected');
     var url = new Url("hl7", "ajax_refresh_table_entries");
     url.addParam("table_number", table_number);
-    url.requestUpdate("entries");
+    url.requestModal("90%", "90%");
   }
 
   function loadTables() {
+    Control.Modal.close();
     var url = new Url("hl7", "ajax_refresh_tables");
     url.requestUpdate("tables");
   }
@@ -31,28 +31,51 @@
     $V(getForm('listFilter').page,page);
   }
 
-  Main.add(function(){
-    Control.Tabs.create("tables-tab", false, {
-        afterChange: function(newContainer){
-          loadEntries(newContainer.get('number'));
-        }
-    });
-  });
+  function refreshModalTableHL7Submit (table_number) {
+    var url = new Url("hl7", "ajax_refresh_hl7v2_table");
+    url.addParam("table_number", table_number);
+    url.requestUpdate("refreshModalTableHL7v2");
+  }
 </script>
 
 <table class="main">
   <tr>
-    <td style="width: 30%">  
+    <td colspan="2">
       <button class="new" onclick="addHL7v2TableDescription()"> {{tr}}CHL7v2TableDescription-title-create{{/tr}} </button>
     </td>
-    <td></td>
   </tr>
   <tr>
-    <td id="tables">
-      {{mb_include template=inc_list_hl7v2_tables}}
-    </td>
-    <td id="entries">
-      {{mb_include template=inc_hl7v2_table_entries}}
+    <td>
+      <form name="listFilter" action="?" method="get" onsubmit="return onSubmitFormAjax(this, null, 'tables');">
+        <input type="hidden" name="m" value="hl7" />
+        <input type="hidden" name="tab" value="ajax_refresh_tables"/>
+        <input type="hidden" name="page" value="{{$page}}" onchange="this.form.onsubmit()" />
+
+        <table class="main layout">
+          <tr>
+            <td class="separator expand" onclick="MbObject.toggleColumn(this, $(this).next())"></td>
+
+            <td>
+              <table class="form">
+                <tr>
+                  <th style="width: 8%"> Mots clés :</th>
+                  <td>
+                    <input type="text" name="keywords" value="{{$keywords}}" onchange="$V(this.form.page, 0)" />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="2">
+                    <button type="submit" class="search">{{tr}}Filter{{/tr}}</button>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </form>
     </td>
   </tr>
 </table>
+
+<div id="tables"></div>

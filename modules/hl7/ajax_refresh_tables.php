@@ -16,6 +16,9 @@ $keywords     = CValue::getOrSession("keywords", "%");
 
 $step = 25;
 
+$table_entry         = new CHL7v2TableEntry();
+$table_entry->number = $table_number;
+
 $table_description = new CHL7v2TableDescription();
 $tables            = $table_description->seek($keywords, null, "$page, $step", true, null, "number");
 foreach ($tables as $_table) {
@@ -30,9 +33,10 @@ $table_description->loadMatchingObject();
 // Création du template
 $smarty = new CSmartyDP();
 $smarty->assign("page"             , $page);
+$smarty->assign("step"             , $step);
 $smarty->assign("tables"           , $tables);
+$smarty->assign("table_entry"      , $table_entry);
 $smarty->assign("total_tables"     , $total_tables);
 $smarty->assign("keywords"         , $keywords);
 $smarty->assign("table_description", $table_description);
 $smarty->display("inc_list_hl7v2_tables.tpl");
-
