@@ -42,20 +42,21 @@ class CSOAPClient {
   /**
    * Test if the WSDL is reachable, and create the object SOAPClient
    *
-   * @param string  $rooturl        The url of the WSDL
-   * @param string  $login          The login
-   * @param string  $password       The password
-   * @param string  $type           Exchange type
-   * @param array   $options        The options
-   * @param boolean $loggable       Log the exchanges
-   * @param string  $stream_context HTTP method (GET, POST, HEAD, PUT, ...)
-   * @param string  $local_cert     Path of the certifacte
-   * @param string  $passphrase     Pass phrase for the certificate
-   * @param boolean $safe_mode      Safe mode
-   * @param boolean $verify_peer    Require verification of SSL certificate used
-   * @param string  $cafile         Location of Certificate Authority file on local filesystem
-   * @param String  $wsdl_external  Location of external wsdl
-   * @param int     $socket_timeout Default timeout (in seconds) for socket based streams
+   * @param string  $rooturl            The url of the WSDL
+   * @param string  $login              The login
+   * @param string  $password           The password
+   * @param string  $type               Exchange type
+   * @param array   $options            The options
+   * @param boolean $loggable           Log the exchanges
+   * @param string  $stream_context     HTTP method (GET, POST, HEAD, PUT, ...)
+   * @param string  $local_cert         Path of the certifacte
+   * @param string  $passphrase         Pass phrase for the certificate
+   * @param boolean $safe_mode          Safe mode
+   * @param boolean $verify_peer        Require verification of SSL certificate used
+   * @param string  $cafile             Location of Certificate Authority file on local filesystem
+   * @param String  $wsdl_external      Location of external wsdl
+   * @param int     $socket_timeout     Default timeout (in seconds) for socket based streams
+   * @param int     $connection_timeout Default timeout (in seconds) for connection
    *
    * @throws CMbException
    *
@@ -75,7 +76,8 @@ class CSOAPClient {
       $verify_peer = false,
       $cafile = null,
       $wsdl_external = null,
-      $socket_timeout = null
+      $socket_timeout = null,
+      $connection_timeout = null
   ) {
     if (($login && $password) || (array_key_exists('login', $options) && array_key_exists('password', $options))) {
       $login = $login ? $login : $options['login'];
@@ -117,7 +119,7 @@ class CSOAPClient {
       default:
         $this->client = new CMbSOAPClient(
           $rooturl, $type, $options, $loggable, $local_cert, $passphrase, $safe_mode, $verify_peer, $cafile, $wsdl_external,
-          $socket_timeout
+          $socket_timeout, $connection_timeout
         );
         break;
     }

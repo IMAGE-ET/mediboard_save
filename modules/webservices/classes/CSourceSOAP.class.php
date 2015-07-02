@@ -36,6 +36,7 @@ class CSourceSOAP extends CExchangeSource {
   public $xop_mode;
   public $use_tunnel;
   public $socket_timeout;
+  public $connection_timeout;
   public $feature;
 
   // Options de contexte SSL
@@ -69,20 +70,21 @@ class CSourceSOAP extends CExchangeSource {
   function getProps() {
     $specs = parent::getProps();
 
-    $specs["wsdl_external"]    = "str";
-    $specs["wsdl_mode"]        = "bool default|1";
-    $specs["evenement_name"]   = "str";
-    $specs["single_parameter"] = "str";
-    $specs["encoding"]         = "enum list|UTF-8|ISO-8859-1|ISO-8859-15 default|UTF-8";
-    $specs["type_soap"]        = "enum list|CMbSOAPClient|CNuSOAPClient default|CMbSOAPClient notNull";
-    $specs["iv_passphrase"]    = "str show|0 loggable|0";
-    $specs["safe_mode"]        = "bool default|0";
-    $specs["return_mode"]      = "enum list|normal|raw|file";
-    $specs["soap_version"]     = "enum list|SOAP_1_1|SOAP_1_2 default|SOAP_1_1 notNull";
-    $specs["xop_mode"]         = "bool default|0";
-    $specs["use_tunnel"]       = "bool default|0";
-    $specs["socket_timeout"]   = "num min|1";
-    $specs["feature"]          = "enum list|SOAP_SINGLE_ELEMENT_ARRAYS|SOAP_USE_XSI_ARRAY_TYPE|SOAP_WAIT_ONE_WAY_CALLS";
+    $specs["wsdl_external"]      = "str";
+    $specs["wsdl_mode"]          = "bool default|1";
+    $specs["evenement_name"]     = "str";
+    $specs["single_parameter"]   = "str";
+    $specs["encoding"]           = "enum list|UTF-8|ISO-8859-1|ISO-8859-15 default|UTF-8";
+    $specs["type_soap"]          = "enum list|CMbSOAPClient|CNuSOAPClient default|CMbSOAPClient notNull";
+    $specs["iv_passphrase"]      = "str show|0 loggable|0";
+    $specs["safe_mode"]          = "bool default|0";
+    $specs["return_mode"]        = "enum list|normal|raw|file";
+    $specs["soap_version"]       = "enum list|SOAP_1_1|SOAP_1_2 default|SOAP_1_1 notNull";
+    $specs["xop_mode"]           = "bool default|0";
+    $specs["use_tunnel"]         = "bool default|0";
+    $specs["socket_timeout"]     = "num min|1";
+    $specs["connection_timeout"] = "num min|1";
+    $specs["feature"]            = "enum list|SOAP_SINGLE_ELEMENT_ARRAYS|SOAP_USE_XSI_ARRAY_TYPE|SOAP_WAIT_ONE_WAY_CALLS";
 
     $specs["local_cert"]       = "str";
     $specs["passphrase"]       = "password show|0 loggable|0";
@@ -210,9 +212,8 @@ class CSourceSOAP extends CExchangeSource {
     $passphrase = $this->getPassword($this->passphrase, "iv_passphrase");
 
     $soap_client->make(
-      $this->host, $this->user, $password, $this->type_echange, $options, null,
-      $this->stream_context, $this->local_cert, $passphrase, $this->safe_mode,
-      $this->verify_peer, $this->cafile, $this->wsdl_external, $this->socket_timeout
+      $this->host, $this->user, $password, $this->type_echange, $options, null, $this->stream_context, $this->local_cert, $passphrase,
+      $this->safe_mode, $this->verify_peer, $this->cafile, $this->wsdl_external, $this->socket_timeout, $this->connection_timeout
     );
     
     if ($soap_client->client->soap_client_error) {

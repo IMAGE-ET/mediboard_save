@@ -265,6 +265,12 @@ class CSetupwebservices extends CSetup {
                 ADD `libelle` VARCHAR (255);";
     $this->addQuery($query);
 
-    $this->mod_version = "0.42";
+    $this->makeRevision("0.42");
+
+    $query = "ALTER TABLE `source_soap`
+                ADD `connection_timeout` INT (4) UNSIGNED;";
+    $this->addQuery($query);
+
+    $this->mod_version = "0.43";
   }
 }

@@ -90,6 +90,10 @@
               <td>{{mb_field object=$source field="socket_timeout" increment=true form="editSourceSOAP-`$source->name`"}}</td>
             </tr>
             <tr>
+              <th>{{mb_label object=$source field="connection_timeout"}}</th>
+              <td>{{mb_field object=$source field="connection_timeout" increment=true form="editSourceSOAP-`$source->name`"}}</td>
+            </tr>
+            <tr>
               <th>{{mb_label object=$source field="feature"}}</th>
               <td>{{mb_field object=$source field="feature" emptyLabel="Choose"}}</td>
             </tr>
