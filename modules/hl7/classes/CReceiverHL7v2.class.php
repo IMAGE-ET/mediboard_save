@@ -41,6 +41,10 @@ class CReceiverHL7v2 extends CInteropReceiver {
     $spec->table = 'receiver_hl7v2';
     $spec->key   = 'receiver_hl7v2_id';
     $spec->messages = array(
+      // HL7
+      "MFN"    => array ("CMFN"),
+
+      // IHE
       "PAM"    => array ("evenementsPatient"),
       "PAM_FR" => array ("evenementsPatient"),
       "DEC"    => array ("CDEC"),

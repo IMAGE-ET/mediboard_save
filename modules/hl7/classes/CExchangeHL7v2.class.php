@@ -19,6 +19,10 @@
 class CExchangeHL7v2 extends CExchangeTabular {
   /** @var string */
   static $messages = array(
+    // HL7
+    "MFN"    => "CMFN",
+
+    // IHE
     "PAM"    => "CPAM",
     "PAM_FR" => "CPAMFR",
     "DEC"    => "CDEC",
