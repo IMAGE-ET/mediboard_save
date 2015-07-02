@@ -1,5 +1,5 @@
 <?php
-$locales['CMbCodeSniffer-error-PEAR_needed'] = 'Cette fonctionnalité nécessite l\'extension PEAR::PHP_CodeSniffer dans sa version 1.3.0';
+$locales['CMbCodeSniffer-error-PEAR_needed'] = 'Cette fonctionnalité nécessite l\'extension PEAR::PHP_CodeSniffer dans sa version 1.4.8';
 $locales['CPermModule._owner.template'] = 'Profil';
 $locales['CPermModule._owner.user'] = 'Utilisateur';
 $locales['CUserLog-_view'] = 'Journal utilisateur';
