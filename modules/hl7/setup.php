@@ -26,6 +26,18 @@ class CSetuphl7 extends CSetup {
     
     $this->addQuery($query, false, "hl7v2");
   }
+
+  function insertTableDescription($number, $description, $user = 1) {
+    $description = $this->ds->escape($description);
+
+    $query = "INSERT INTO `table_description` (
+              `table_description_id`, `number`, `description`, `user`
+              ) VALUES (
+                NULL , '$number', '$description', '$user'
+              );";
+
+    $this->addQuery($query, false, "hl7v2");
+  }
   
   function updateTableEntry($number, $update, $where) {
     foreach ($update as $field => $value) {
@@ -1507,7 +1519,31 @@ class CSetuphl7 extends CSetup {
                 ADD `send_insurance` ENUM ('0','1') DEFAULT '0';";
     $this->addQuery($query);
 
-    $this->mod_version = "1.21";
+    $this->makeRevision("1.21");
+
+    $this->insertTableDescription("1295", "Entité");
+
+    $this->insertTableEntry("1295", "ID_GLBL", "ID_GLBL", null, null, "Identifiant unique global");
+    $this->insertTableEntry("1295", "LBL_MTF_OVRTR", "LBL_MTF_OVRTR", null, null, "Libellé du motif de l'ouverture");
+    $this->insertTableEntry("1295", "LBL_MTF_FRMTR", "LBL_MTF_FRMTR", null, null, "Libellé du motif de fermeture");
+    $this->insertTableEntry("1295", "LBL", "LBL", null, null, "Libellé");
+    $this->insertTableEntry("1295", "LBL_CRT", "LBL_CRT", null, null, "Libellé court");
+    $this->insertTableEntry("1295", "CD", "CD", "code", "code", "Code");
+    $this->insertTableEntry("1295", "DSCRPTN", "DSCRPTN", "description", "description", "Description");
+    $this->insertTableEntry("1295", "ID_GLBL_RSPNSBL", "ID_GLBL_RSPNSBL", "user_id", "user_id", "Identifiant unique global du responsable");
+    $this->insertTableEntry("1295", "NM_USL_RSPNSBL", "NM_USL_RSPNSBL", "user_last_name", "user_last_name", "Nom usuel du responsable");
+    $this->insertTableEntry("1295", "NM_NSNC_RSPNSBL", "NM_NSNC_RSPNSBL", null, null, "Nom de naissance du responsable");
+    $this->insertTableEntry("1295", "PRNM_RSPNSBL", "PRNM_RSPNSBL", "user_first_name", "user_first_name", "Prénom du responsable");
+    $this->insertTableEntry("1295", "RPPS_RSPNSBL", "RPPS_RSPNSBL", "rpps", "rpps", "Code RPPS du responsable");
+    $this->insertTableEntry("1295", "ADL_RSPNSBL", "ADL_RSPNSBL", "adeli", "adeli", "Code ADELI du responsable");
+    $this->insertTableEntry("1295", "CD_SPCLT", "CD_SPCLT", null, null, "Code spécialité B2 du responsable");
+    $this->insertTableEntry("1295", "TLPHN_RSPNSBL", "TLPHN_RSPNSBL", "user_phone", "user_phone", "Téléphone du responsable");
+    $this->insertTableEntry("1295", "DT_OVRTR", "DT_OVRTR", "opening_date", "opening_date", "Date d'ouverture");
+    $this->insertTableEntry("1295", "DT_FRMTR", "DT_FRMTR", "closing_date", "closing_date", "Date de fermeture");
+    $this->insertTableEntry("1295", "DT_ACTVTN", "DT_ACTVTN", "activation_date", "activation_date", "Date d'activation");
+    $this->insertTableEntry("1295", "DT_FN_ACTVTN", "DT_FN_ACTVTN", "inactivation_date", "inactivation_date", "Date de fin d'activation");
+    
+    $this->mod_version = "1.22";
 
     $query = "SHOW TABLES LIKE 'table_description'";
     $this->addDatasource("hl7v2", $query);
