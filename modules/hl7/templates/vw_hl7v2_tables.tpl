@@ -8,23 +8,27 @@
  * @license GNU General Public License, see http://www.gnu.org/licenses/gpl.html
 *}}
 <script>
-  function addHL7v2TableDescription() {
-    var url = new Url("hl7", "ajax_add_hl7v2_table_description");
-    url.requestModal(400, 200);
+  function editTableDescription(table_id, element) {
+    if (element)
+      element.up('tr').addUniqueClassName('selected');
+
+    new Url("hl7", "ajax_edit_table_description")
+      .addParam("table_id", table_id)
+      .requestModal(500, 300);
   }
   
   function loadEntries(table_number, element) {
     if (element)
      element.up('tr').addUniqueClassName('selected');
-    var url = new Url("hl7", "ajax_refresh_table_entries");
-    url.addParam("table_number", table_number);
-    url.requestModal("90%", "90%");
+
+    new Url("hl7", "ajax_refresh_table_entries")
+      .addParam("table_number", table_number)
+      .requestModal("90%", "90%");
   }
 
   function loadTables() {
-    Control.Modal.close();
     var url = new Url("hl7", "ajax_refresh_tables");
-    url.requestUpdate("tables");
+    url.requestUpdate("tables-hl7v2", Control.Modal.close());
   }
   
   function changePage(page) {
@@ -32,23 +36,27 @@
   }
 
   function refreshModalTableHL7Submit (table_number) {
-    var url = new Url("hl7", "ajax_refresh_hl7v2_table");
-    url.addParam("table_number", table_number);
-    url.requestUpdate("refreshModalTableHL7v2");
+     new Url("hl7", "ajax_refresh_hl7v2_table")
+      .addParam("table_number", table_number)
+      .requestUpdate("refreshModalTableHL7v2");
   }
+
+  Main.add(function() {
+    getForm('listFilter').onsubmit();
+  });
 </script>
 
 <table class="main">
   <tr>
     <td colspan="2">
-      <button class="new" onclick="addHL7v2TableDescription()"> {{tr}}CHL7v2TableDescription-title-create{{/tr}} </button>
+      <button class="new" onclick="editTableDescription(0)"> {{tr}}CHL7v2TableDescription-title-create{{/tr}} </button>
     </td>
   </tr>
   <tr>
     <td>
-      <form name="listFilter" action="?" method="get" onsubmit="return onSubmitFormAjax(this, null, 'tables');">
+      <form name="listFilter" action="?" method="get" onsubmit="return onSubmitFormAjax(this, null, 'tables-hl7v2');">
         <input type="hidden" name="m" value="hl7" />
-        <input type="hidden" name="tab" value="ajax_refresh_tables"/>
+        <input type="hidden" name="a" value="ajax_refresh_tables"/>
         <input type="hidden" name="page" value="{{$page}}" onchange="this.form.onsubmit()" />
 
         <table class="main layout">
@@ -78,4 +86,4 @@
   </tr>
 </table>
 
-<div id="tables"></div>
+<div id="tables-hl7v2"></div>

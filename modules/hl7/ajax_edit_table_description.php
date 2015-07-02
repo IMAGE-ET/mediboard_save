@@ -10,11 +10,17 @@
 
 CCanDo::checkAdmin();
 
+$table_id = CValue::get("table_id");
+
 $table_description = new CHL7v2TableDescription();
-$table_description->user = 1;
+$table_description->load($table_id);
+
+if (!$table_description->_id) {
+  $table_description->user = 1;
+}
 
 // Création du template
 $smarty = new CSmartyDP();
 $smarty->assign("table_description", $table_description);
-$smarty->display("inc_add_hl7v2_table_description.tpl");
+$smarty->display("inc_edit_table_description.tpl");
 

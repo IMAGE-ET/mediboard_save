@@ -15,7 +15,7 @@
  * Classe CHL7v2EventMFN
  * Transporter des structures spécifiques dans des messages HL7
  */
-class CHL7v2EventMFN extends CHL7v2Event {
+class CHL7v2EventMFN extends CHL7v2Event implements CHL7EventMFN {
   /** @var string */
   public $event_type = "MFN";
 
@@ -29,7 +29,6 @@ class CHL7v2EventMFN extends CHL7v2Event {
     'STRCTR_INTR' => 'CInternalStructure',
     'R'           => 'CChambre',
   );
-
 
   /**
    * Construct

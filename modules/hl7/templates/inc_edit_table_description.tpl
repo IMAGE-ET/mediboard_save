@@ -23,8 +23,13 @@
     </tr>
     <tr>
       <th>{{mb_label object=$table_description field="description"}}</th>
-      <td>{{mb_field object=$table_description field="description"}}</td>
+      <td>{{mb_field object=$table_description field="description" size="50"}}</td>
     </tr>
+    <tr>
+      <th>{{mb_label object=$table_description field="user"}}</th>
+      <td>{{mb_value object=$table_description field="user"}}</td>
+    </tr>
+
     <td colspan="2" style="text-align: center">
       <button type="submit" class="save">{{tr}}Save{{/tr}}</button>
     </td>

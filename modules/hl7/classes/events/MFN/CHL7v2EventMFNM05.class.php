@@ -15,7 +15,7 @@
  * Class CHL7v2EventMFNM05
  * Transporte des éléments de structure liés à la localisation du patient - HL7
  */
-class CHL7v2EventMFNM05 extends CHL7v2EventMFN {
+class CHL7v2EventMFNM05 extends CHL7v2EventMFN implements CHL7EventMFNM05 {
 
   /** @var string */
   public $code = "M05";
@@ -26,7 +26,7 @@ class CHL7v2EventMFNM05 extends CHL7v2EventMFN {
   /**
    * Build M05 event
    *
-   * @param CEntity $entite entity
+   * @param CMbObject $object object
    *
    * @see parent::build()
    *
