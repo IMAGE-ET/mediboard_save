@@ -143,7 +143,7 @@ else {
   $naissance->fausse_couche     = $fausse_couche;
   $naissance->rques             = $rques;
 
-  if (!$naissance->date_time && $heure) {
+  if (!$naissance->date_time && $date_time) {
     $validation_naissance = true;
     $naissance->operation_id = $operation_id;
   }
@@ -167,7 +167,7 @@ else {
   $sejour_enfant->praticien_id = $praticien_id;
   $sejour_enfant->_naissance = true;
   storeObject($sejour_enfant);
-  
+
   // Effectuer l'admission si nécessaire (si issu d'un dossier provisoire)
   if ($validation_naissance) {
     
@@ -180,10 +180,10 @@ else {
     storeObject($sejour_enfant);
     
     // Checker également si l'affectation de la maman existe
-    // Et dans ce cas, la créer pour le bébé  
+    // Et dans ce cas, la créer pour le bébé
     if ($curr_affect->_id) {
       $affectation = $sejour_enfant->loadRefCurrAffectation();
-      
+
       if (!$affectation->_id) {
         $affectation = new CAffectation();
         $affectation->entree = $sejour_enfant->entree_reelle;

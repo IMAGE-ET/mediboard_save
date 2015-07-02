@@ -8,9 +8,9 @@
  * @version    $Revision$
  *}}
 
-<script type="text/javascript">
+<script>
   Main.add(function() {
-    window.save_num_naissance = "{{$naissance->num_naissance}}"
+    window.save_num_naissance = "{{$naissance->num_naissance}}";
     var form = getForm("newNaissance");
     var url = new Url("system", "ajax_seek_autocomplete");
     url.addParam("object_class", "CMediusers");
@@ -40,7 +40,7 @@
 </script>
 
 <form name="newNaissance" method="post" action="?"
-  onsubmit="return onSubmitFormAjax(this, {onComplete: function() { Control.Modal.close(); Naissance.reloadNaissances('{{$operation_id}}'); }})">
+  onsubmit="return onSubmitFormAjax(this, function() { Control.Modal.close(); Naissance.reloadNaissances('{{$operation_id}}'); })">
   <input type="hidden" name="m" value="maternite" />
   <input type="hidden" name="del" value="0" />
   {{mb_field object=$naissance field=sejour_maman_id hidden=true}}
