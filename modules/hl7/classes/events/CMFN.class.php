@@ -27,7 +27,7 @@ class CMFN extends CHL7 {
    * @var array
    */
   static $evenements = array(
-    "M05" => "CHL7v2EventMFNM05",
+    "M05" => "CHL7EventMFNM05",
   );
 
   /**
