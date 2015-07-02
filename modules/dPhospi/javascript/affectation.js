@@ -32,7 +32,7 @@ if (!window.Affectation) {
       if (window.Placement) {
         Placement.stop();
       }
-      url.requestModal(500, null, {
+      url.requestModal("50%", "60%", {
         showReload: false,
         onClose: function() {
           if (window.Placement) {
