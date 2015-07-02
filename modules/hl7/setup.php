@@ -1542,8 +1542,25 @@ class CSetuphl7 extends CSetup {
     $this->insertTableEntry("1295", "DT_FRMTR", "DT_FRMTR", "closing_date", "closing_date", "Date de fermeture");
     $this->insertTableEntry("1295", "DT_ACTVTN", "DT_ACTVTN", "activation_date", "activation_date", "Date d'activation");
     $this->insertTableEntry("1295", "DT_FN_ACTVTN", "DT_FN_ACTVTN", "inactivation_date", "inactivation_date", "Date de fin d'activation");
-    
-    $this->mod_version = "1.22";
+
+    $this->makeRevision("1.22");
+
+    $query = "ALTER TABLE `receiver_hl7v2_config`
+                CHANGE `ITI30_HL7_version` `ITI30_HL7_version` ENUM ('2.1','2.2','2.3','2.3.1','2.4','2.5','FR_2.3','FR_2.4','FR_2.5','FR_2.6') DEFAULT '2.5',
+                CHANGE `ITI31_HL7_version` `ITI31_HL7_version` ENUM ('2.1','2.2','2.3','2.3.1','2.4','2.5','FR_2.3','FR_2.4','FR_2.5','FR_2.6') DEFAULT '2.5';";
+    $this->addQuery($query);
+
+    $query = "UPDATE `receiver_hl7v2_config`
+                SET `ITI30_HL7_version` = 'FR_2.5'
+                WHERE `ITI30_HL7_version` = 'FR_2.1' OR `ITI30_HL7_version` = 'FR_2.2' OR `ITI30_HL7_version` = 'FR_2.3';";
+    $this->addQuery($query);
+
+    $query = "UPDATE `receiver_hl7v2_config`
+                SET `ITI31_HL7_version` = 'FR_2.5'
+                WHERE `ITI31_HL7_version` = 'FR_2.1' OR `ITI31_HL7_version` = 'FR_2.2' OR `ITI31_HL7_version` = 'FR_2.3';";
+    $this->addQuery($query);
+
+    $this->mod_version = "1.23";
 
     $query = "SHOW TABLES LIKE 'table_description'";
     $this->addDatasource("hl7v2", $query);
