@@ -61,30 +61,37 @@
       return;
     }
     $V(getForm('edit_usermessage')._dest, 1);
-    dest_list.insert('<li id="dest_'+id+'" style="border-left:'+style+';">'+name+'<input type="hidden" name="dest[]" value="'+id+'"/><button class="delete notext" type="button" style="display: inline; margin-left: 5px;" onclick="removeDest(\''+id+'\');"></button></li>');
+    dest_list.insert('<li id="dest_'+id+'" style="border-left:'+style+';">'+name+'<input class="dest" type="hidden" name="dest[]" value="'+id+'"/><button class="delete notext" type="button" style="display: inline; margin-left: 5px;" onclick="removeDest(\''+id+'\');"></button></li>');
   };
 
   removeDest = function(id) {
     $('dest_'+id).remove();
-    if (!$$('input[name="dest[]"]').length) {
+    if (!$$('input.dest').length) {
       $V(getForm('edit_usermessage')._dest, '');
     }
   };
 
   submitMessage = function(form, closeModal) {
-    var dests = $$('input[name="dest[]"]');
+    var dests = $$('input.dest');
     if (dests.length) {
-      {{if $app->user_prefs.inputMode == 'html'}}
-        $V(form.content, CKEDITOR.instances.htmlarea.getData());
-      {{/if}}
-      if (!$V(form.del)) {
+      if ($V(form.del) == '0') {
+        {{if $app->user_prefs.inputMode == 'html'}}
+          $V(form.content, CKEDITOR.instances.htmlarea.getData());
+        {{/if}}
+        /*  We manually add an index to the dest[] input because the onSubmitFormAjax function can't handle the array inputs */
+        var index_dest = 0;
+        dests.each(function(dest) {
+          dest.name = 'dest[' + index_dest + ']';
+          index_dest++;
+        });
+
         return onSubmitFormAjax(form);
       }
       else {
         return onSubmitFormAjax(form, {check: function() {
             return true;
-          }});
-        }
+        }});
+      }
     }
     else {
       alert('{{tr}}CUserMessage-msg-no_recipient_selected{{/tr}}');
@@ -141,18 +148,18 @@
           <input type="text" name="_to_autocomplete_view" />
         {{/if}}
         <ul id="list_dest">
-        {{foreach from=$usermessage->_ref_destinataires item=_dest}}
-          <li id="dest_{{$_dest->_ref_user_to->_id}}">
-            <span class="mediuser" style="border-color: #{{$_dest->_ref_user_to->_ref_function->color}};">
-              {{$_dest->_ref_user_to}} {{if $_dest->datetime_read}}(lu){{/if}}
-            </span>
+          {{foreach from=$usermessage->_ref_destinataires item=_dest}}
+            <li id="dest_{{$_dest->_ref_user_to->_id}}">
+              <span class="mediuser" style="border-color: #{{$_dest->_ref_user_to->_ref_function->color}};">
+                {{$_dest->_ref_user_to}} {{if $_dest->datetime_read}}(lu){{/if}}
+              </span>
 
-            {{if $usermessage->_can_edit}}
-              <input type="hidden" name="dest[]" value="{{$_dest->_ref_user_to->_id}}"/>
-              <button class="delete notext" type="button" style="display: inline; margin-left: 5px;" onclick="removeDest('{{$_dest->_ref_user_to->_id}}');"></button>
-            {{/if}}
-          </li>
-        {{/foreach}}
+              {{if $usermessage->_can_edit}}
+                <input type="hidden" class="dest" name="dest[]" value="{{$_dest->_ref_user_to->_id}}"/>
+                <button class="delete notext" type="button" style="display: inline; margin-left: 5px;" onclick="removeDest('{{$_dest->_ref_user_to->_id}}');"></button>
+              {{/if}}
+            </li>
+          {{/foreach}}
         </ul>
       </td>
     </tr>

@@ -11,13 +11,13 @@
 
 <div id="actions" style="text-align: center; margin-bottom: 5px;">
   {{if $mode == 'inbox' || $mode == 'archive'}}
-    <button type="button" onclick="Control.Modal.close();UserMessage.create('{{$usermessage->creator_id}}', '{{$usermessage->_id}}', '{{$app->user_prefs.inputMode}}');">
+    <button type="button" onclick="Control.Modal.close();UserMessage.create('{{$usermessage->creator_id}}', '{{$usermessage->_id}}', '', '{{$app->user_prefs.inputMode}}');">
       <i class="msgicon fa fa-reply"></i>
       {{tr}}CUserMessage.answer{{/tr}}
     </button>
 
     {{if $usermessage->_ref_destinataires|@count > 1}}
-      <button type="button" onclick="Control.Modal.close();UserMessage.create('{{$usermessage->creator_id}}', '{{$usermessage->_id}}', '{{$app->user_prefs.inputMode}}', 1);">
+      <button type="button" onclick="Control.Modal.close();UserMessage.create('{{$usermessage->creator_id}}', '{{$usermessage->_id}}', '', '{{$app->user_prefs.inputMode}}', 1);">
         <i class="msgicon fa fa-reply-all"></i>
         {{tr}}CUserMessage.answer_to_all{{/tr}}
       </button>
