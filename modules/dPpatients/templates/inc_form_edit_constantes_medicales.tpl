@@ -328,7 +328,7 @@ Main.add(function () {
       </table>
     </div>
 
-    <div style="position: absolute; bottom:0; text-align:center; height:80px; width: 100%;" id="buttons_form_const-{{$unique_id}}">
+    <div style="position: absolute; bottom:0; text-align:center; height:100px; width: 100%;" id="buttons_form_const-{{$unique_id}}">
       {{if $can_edit && !$modif_timeout}}
         {{if $constantes->_id}}
           {{mb_field object=$constantes field=datetime form="edit-constantes-medicales$unique_id" register=true}}
@@ -348,7 +348,7 @@ Main.add(function () {
             </script>
           {{/if}}
         {{/if}}
-        {{mb_field object=$constantes field=comment placeholder="Commentaire" rows=2}}
+        {{mb_field object=$constantes field=comment placeholder="Commentaire" rows=2 form="edit-constantes-medicales$unique_id" aidesaisie="filterWithDependFields: false, validateOnBlur: 0"}}
         {{if !$hide_save_button}}
           <button class="modify singleclick" onclick="return submitConstantesMedicales(this.form);">
             {{tr}}Save{{/tr}}

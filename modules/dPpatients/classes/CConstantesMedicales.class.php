@@ -994,7 +994,7 @@ class CConstantesMedicales extends CMbObject {
     $props['datetime']               = 'dateTime notNull';
     $props['context_class']          = 'enum list|CConsultation|CSejour|CPatient';
     $props['context_id']             = 'ref class|CMbObject meta|context_class cascade';
-    $props['comment']                = 'text';
+    $props['comment']                = 'text helped';
 
     $props['poids']                  = 'float pos max|500';
     $props['_poids_g']               = 'num pos min|300 max|500000';
