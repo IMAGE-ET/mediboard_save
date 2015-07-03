@@ -74,6 +74,10 @@ if (!$naissance_id) {
   // Etape 1 (patient)
   $patient = new CPatient();
   $patient->nom = $nom;
+  // Recopie du nom de jeune de fille de la parturiente si bébé de sexe féminin
+  if ($sexe == "f" && CAppUI::conf("dPpatients CPatient nom_jeune_fille_mandatory", CGroups::loadCurrent())) {
+    $patient->nom_jeune_fille = $parturiente->nom_jeune_fille;
+  }
   $patient->prenom = $prenom;
   $patient->sexe = $sexe;
   $patient->civilite = "enf";
