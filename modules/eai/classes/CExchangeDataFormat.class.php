@@ -577,8 +577,8 @@ class CExchangeDataFormat extends CMbMetaObject {
    * @return void
    */
   function injectMasterIdexMissing() {
-    $patient = null;
-    $sejour  = null;
+    $patient = new CPatient();
+    $sejour  = new CSejour();
     if ($this->object_class && $this->object_id) {
       $object = CMbObject::loadFromGuid("$this->object_class-$this->object_id");
 
@@ -594,11 +594,25 @@ class CExchangeDataFormat extends CMbMetaObject {
       if ($object instanceof CSejour) {
         $sejour = $object;
         $sejour->loadNDA($this->group_id);
-        $object->loadRefPatient()->loadIPP($this->group_id);
+        $sejour->loadRefPatient()->loadIPP($this->group_id);
 
         $patient = $sejour->_ref_patient;
 
-        if (!$sejour->_NDA) {
+        if (!$patient->_IPP || !$sejour->_NDA) {
+          return;
+        }
+      }
+
+      if ($object instanceof CAffectation) {
+        $affectation = $object;
+        $sejour = $affectation->loadRefSejour();
+
+        $sejour->loadNDA($this->group_id);
+        $sejour->loadRefPatient()->loadIPP($this->group_id);
+
+        $patient = $sejour->_ref_patient;
+
+        if (!$patient->_IPP || !$sejour->_NDA) {
           return;
         }
       }
