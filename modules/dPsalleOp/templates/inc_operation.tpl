@@ -329,19 +329,29 @@
   };
 
   infoAnapath = function(field) {
+    var button = field.up("td").down("button.edit");
     if ($V(field) == 1) {
       var url = new Url("salleOp", "ajax_info_anapath");
       url.addParam("operation_id", $V(field.form.operation_id));
       url.requestModal(500, 300);
+      button.style.visibility = "visible";
+    }
+    else {
+      button.style.visibility = "hidden";
     }
     onSubmitFormAjax(field.form);
   };
 
   infoBacterio = function(field) {
+    var button = field.up("td").down("button.edit");
     if ($V(field) == 1) {
       var url = new Url("salleOp", "ajax_info_bacterio");
       url.addParam("operation_id", $V(field.form.operation_id));
       url.requestModal(500, 300);
+      button.style.visibility = "visible";
+    }
+    else {
+      button.style.visibility = "hidden";
     }
     onSubmitFormAjax(field.form);
   };
@@ -461,6 +471,9 @@
             </th>
             <td>
               {{mb_field object=$selOp field=anapath typeEnum="radio" onChange="infoAnapath(this);"}}
+              <button type="button" class="edit notext" {{if !$selOp->anapath}}style="visibility: hidden;"{{/if}}
+                      title="{{tr}}COperation-_modify_anapath{{/tr}}"
+                      onclick="infoAnapath(this.form.anapath[0])"></button>
             </td>
             <th style="text-align: right">
               {{mb_label object=$selOp field=prothese}}
@@ -475,6 +488,9 @@
             </th>
             <td style="vertical-align:middle;">
               {{mb_field object=$selOp field=labo typeEnum="radio" onChange="infoBacterio(this);"}}
+              <button type="button" class="edit notext" {{if !$selOp->labo}}style="visibility: hidden;"{{/if}}
+                      title="{{tr}}COperation-_modify_labo{{/tr}}"
+                      onclick="infoBacterio(this.form.labo[0])"></button>
             </td>
             <td colspan="2"></td>
           </tr>
@@ -485,14 +501,14 @@
     </div>
 
     <!-- codage diagnostics CIM -->
-    <div id="diag_tab" style="display:none">
+    <div id="diag_tab" style="display: none">
       <div id="cim"></div>
     </div>
   {{/if}}
 
   <!-- Anesthesie -->
   {{if !$currUser->_is_praticien || ($currUser->_is_praticien && $can->edit) || ($currUser->_is_praticien && $currUser->_is_anesth)}}
-    <div id="anesth_tab" style="display:none">
+    <div id="anesth_tab" style="display: none">
       {{mb_include module=salleOp template=inc_vw_info_anesth}}
     </div>
   {{/if}}
@@ -500,7 +516,7 @@
   {{if !$currUser->_is_praticien || ($currUser->_is_praticien && $can->edit) || ($currUser->_is_praticien && !$currUser->_is_anesth)}}
     <!-- Documents et facteurs de risque -->
     {{assign var="dossier_medical" value=$selOp->_ref_sejour->_ref_dossier_medical}}
-    <div id="dossier_tab" style="display:none">
+    <div id="dossier_tab" style="display: none">
       <table class="form">
         <tr>
           <th class="title">Documents</th>
@@ -528,16 +544,16 @@
 
 
   <div id="constantes-medicales" style="display: none;"></div>
-  <div id="antecedents" style="display:none"></div>
+  <div id="antecedents" style="display: none"></div>
 
   {{if "dPprescription"|module_active}}
     <!-- Affichage de la prescription -->
-    <div id="prescription_sejour_tab" style="display:none">
+    <div id="prescription_sejour_tab" style="display: none">
       <div id="prescription_sejour"></div>
     </div>
 
     <!-- Affichage du dossier de soins avec les lignes "bloc" -->
-    <div id="dossier_traitement{{if "soins Other vue_condensee_dossier_soins"|conf:"CGroups-$g"}}_compact{{/if}}" style="display:none">
+    <div id="dossier_traitement{{if "soins Other vue_condensee_dossier_soins"|conf:"CGroups-$g"}}_compact{{/if}}" style="display: none">
       {{if "soins Other vue_condensee_dossier_soins"|conf:"CGroups-$g"}}
         {{mb_include module=soins template=inc_dossier_soins_widgets}}
       {{/if}}
@@ -547,11 +563,11 @@
 
 {{if $isImedsInstalled}}
   <!-- Affichage de la prescription -->
-  <div id="Imeds_tab" style="display:none"></div>
+  <div id="Imeds_tab" style="display: none"></div>
 {{/if}}
 
 {{if "maternite"|module_active && $sejour->grossesse_id}}
   <div id="grossesse" style="display: none;"></div>
 {{elseif $conf.dPsalleOp.enable_surveillance_perop}}
-  <div id="surveillance_perop" style="display:none"></div>
+  <div id="surveillance_perop" style="display: none"></div>
 {{/if}}
