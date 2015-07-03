@@ -14,30 +14,30 @@
 CCanDo::checkRead();
 
 $date  = CValue::get("date", CMbDT::date());
+
 $group = CGroups::loadCurrent();
 
 $consultation = new CConsultation();
+
 $where = array();
-$where["consultation.grossesse_id"] = "IS NOT NULL";
-$where["plageconsult.date"] = "= '$date'";
-$where["group_id"] = " = '$group->_id'";
+$where["consultation.grossesse_id"]    = "IS NOT NULL";
+$where["consultation.annule"]          = "= '0'";
+$where["plageconsult.date"]            = "= '$date'";
+$where["functions_mediboard.group_id"] = "= '$group->_id'";
 
 $ljoin = array();
-$ljoin["plageconsult"] = "plageconsult.plageconsult_id = consultation.plageconsult_id";
-$ljoin["users_mediboard"] = "plageconsult.chir_id = users_mediboard.user_id";
+$ljoin["plageconsult"]        = "plageconsult.plageconsult_id = consultation.plageconsult_id";
+$ljoin["users_mediboard"]     = "plageconsult.chir_id = users_mediboard.user_id";
 $ljoin["functions_mediboard"] = "functions_mediboard.function_id = users_mediboard.function_id";
 
-$order = "heure ASC";
-
 /** @var CConsultation[] $listConsults */
-$listConsults = $consultation->loadList($where, $order, null, null, $ljoin);
+$listConsults = $consultation->loadList($where, "heure ASC", null, null, $ljoin);
 
-$plage = CMbObject::massLoadFwdRef($listConsults, "plageconsult_id");
-CMbObject::massLoadFwdRef($plage, "chir_id");
-CMbObject::massLoadFwdRef($listConsults, "sejour_id");
-$grossesses = CMbObject::massLoadFwdRef($listConsults, "grossesse_id");
-CMbObject::massLoadFwdRef($grossesses, "parturiente_id");
-
+$plages = CStoredObject::massLoadFwdRef($listConsults, "plageconsult_id");
+CStoredObject::massLoadFwdRef($plages, "chir_id");
+CStoredObject::massLoadFwdRef($listConsults, "sejour_id");
+$grossesses = CStoredObject::massLoadFwdRef($listConsults, "grossesse_id");
+CStoredObject::massLoadFwdRef($grossesses, "parturiente_id");
 
 foreach ($listConsults as $_consult) {
   $_consult->loadRefPraticien();
@@ -46,6 +46,8 @@ foreach ($listConsults as $_consult) {
 }
 
 $smarty = new CSmartyDP();
+
 $smarty->assign("date"        , $date);
 $smarty->assign("listConsults", $listConsults);
+
 $smarty->display("inc_tdb_consultations.tpl");

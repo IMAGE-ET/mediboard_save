@@ -1,50 +1,53 @@
 <!-- $Id: $ -->
 
-<script type="text/javascript">
+<script>
+  CancelAction = {
+    action: null,
+    form: null,
 
-CancelAction = {
-  action: null,
-  form: null,
+    checkAll: function(input) {
+      $$('input.consult').each(function(element) {
+        element.checked = input.checked;
+      });
+    },
 
-  checkAll: function(input) {
-    $$('input.consult').each(function(element) {
-      element.checked = input.checked;
-    });
-  },
-  
-  confirm: function(button, action) {
-    $('cell_motif_annulation').hide();
-    $$('div.confirm').invoke('hide');
-    $$('div.'+action).invoke('show');
+    confirm: function(button, action) {
+      $('cell_motif_annulation').hide();
+      $$('div.confirm').invoke('hide');
+      $$('div.'+action).invoke('show');
 
-    if (action == 'cancel-1') {
-      $('cell_motif_annulation').show();
-      $V(button.form.motif_annulation, 'not_arrived');
-    }
+      if (action == 'cancel-1') {
+        $('cell_motif_annulation').show();
+        $V(button.form.motif_annulation, 'not_arrived');
+      }
 
-    Modal.open('following_consultations');
-    this.action = action;
-    this.form = button.form;
-  },
-  
-  submit: function() {
-    var consultation_ids = $$('input.consult:checked').pluck('value');
-    consultation_ids.push($V(this.form.consultation_id));
-    consultation_ids = consultation_ids.join('-');
-    $V(this.form.consultation_ids, consultation_ids);
-    
-    switch (this.action) {
-      case 'cancel-0': $V(this.form.annule, '0'); break;
-      case 'cancel-1': $V(this.form.annule, '1'); break;
-      case 'deletion': $V(this.form.del   , '1'); break;
-    }
+      Modal.open('following_consultations');
+      this.action = action;
+      this.form = button.form;
+    },
 
-    if (checkForm(this.form)) {
-      this.form.submit();
+    submit: function() {
+      var consultation_ids = $$('input.consult:checked').pluck('value');
+      consultation_ids.push($V(this.form.consultation_id));
+      consultation_ids = consultation_ids.join('-');
+      $V(this.form.consultation_ids, consultation_ids);
+
+      switch (this.action) {
+        case 'cancel-0': $V(this.form.annule, '0'); break;
+        case 'cancel-1': $V(this.form.annule, '1'); break;
+        case 'deletion': $V(this.form.del   , '1'); break;
+      }
+
+      if (checkForm(this.form)) {
+        {{if $dialog && $modal}}
+          Control.Modal.close();
+          this.form.onsubmit();
+        {{else}}
+          this.form.submit();
+        {{/if}}
+      }
     }
   }
-}
-
 </script>
 
 {{if $consult->annule}}
