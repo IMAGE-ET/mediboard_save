@@ -14,22 +14,21 @@
     <th>Afficher les plages libres</th>
     <td>
       <select name="show_free">
-        <option value="1" selected="selected">Oui</option>
+        <option value="1" selected>Oui</option>
         <option value="0">Non</option>
       </select>
     </td>
   </tr>
 
   <tr>
-    <th>Afficher les plages annulées</th>
+    <th>Afficher les consultations annulées</th>
     <td>
       <select name="cancelled">
         <option value="1">Oui</option>
-        <option value="0" selected="selected">Non</option>
+        <option value="0" selected>Non</option>
       </select>
     </td>
   </tr>
-
 
   <tr>
     <th>Statut des consultations facturées</th>
@@ -79,7 +78,6 @@
   <tr>
     <td colspan="2" class="button">
       <button class="tick" type="button" onclick="Control.Modal.close();">{{tr}}OK{{/tr}}</button>
-
     </td>
   </tr>
 </table>
