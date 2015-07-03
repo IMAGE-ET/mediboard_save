@@ -9,11 +9,11 @@
 *}}
 
 <tr>
-  <td>
+  <td class="narrow">
    {{if $object->_self_sender}}
-     <img src="images/icons/prev.png" alt="&lt;" />
+     <img src="style/mediboard/images/buttons/door_in.png" alt="&lt;" />
    {{else}}
-     <img src="images/icons/next.png" alt="&gt;" />
+     <img src="style/mediboard/images/buttons/door_out.png" alt="&gt;" />
    {{/if}}
   </td>
   <td>
@@ -21,16 +21,14 @@
        class="button modify notext"></a>
   </td>
   <td class="narrow">
-    <button type="button" onclick="viewEchange('{{$object->_id}}')" class="search">
+    <button type="button" onclick="EchangeSOAP.viewEchange('{{$object->_id}}')" class="search">
      {{$object->_id|str_pad:6:'0':$smarty.const.STR_PAD_LEFT}}
     </button>
   </td>
-  <td>
-    <span>
-      <label title='{{mb_value object=$object field="date_echange"}}'>
-        {{$object->date_echange}}
-      </label>
-    </span>
+  <td class="narrow">
+    <label title='{{mb_value object=$object field="date_echange"}}'>
+      {{mb_value object=$object field="date_echange" format=relative}}
+    </label>
   </td>
   <td>
     {{if $object->_self_sender}}

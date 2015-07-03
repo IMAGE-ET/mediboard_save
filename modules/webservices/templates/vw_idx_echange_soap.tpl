@@ -8,153 +8,92 @@
  * @license GNU General Public License, see http://www.gnu.org/licenses/gpl.html
 *}}
 
-{{if !$echange_soap->_id}}
-<script type="text/javascript">
-	function fillSelect(select, dest) {
-    var url = new Url("webservices", "ajax_filter_web_func");
-    url.addParam("service_demande", select);
-    url.addParam("type", dest);
+{{mb_script module="webservices" script="echange_soap"}}
 
-    if (dest == 'fonction') {
-      url.addParam("web_service_demande", $V(getForm('filterEchange').web_service));
-    }
-    
-    url.requestUpdate(dest, {onComplete: function() {
-      if (dest == 'web_service') {
-        fillSelect($V(getForm('filterEchange').service), 'fonction');
-      }
-    }});
-	}
+<script>
+  Main.add(function() {
+    EchangeSOAP.fillSelect($V(getForm('listFilter').service), 'web_service');
 
-	viewEchange = function(echange_soap_id) {
-	  var url = new Url("webservices", "vw_idx_echange_soap");
-	  url.addParam("echange_soap_id", echange_soap_id);
-	  url.requestModal(800, 500);
-	}
-
-	function changePage(page) {
-	  $V(getForm('filterEchange').page, page);
-	}
+    getForm('listFilter').onsubmit();
+  });
 </script>
-{{/if}}
-
-{{if !$echange_soap->_id}}
-  {{main}}
-    fillSelect($V(getForm('filterEchange').service), 'web_service');
-  {{/main}}
-{{/if}}
 
 <div id="empty_area" style="display: none;"></div>
+
 <table class="main">
-  {{if !$echange_soap->_id}}
-  
   <!-- Filtres -->
   <tr>
     <td style="text-align: center;">
-      <form action="?" name="filterEchange" method="get">
-        <input type="hidden" name="m" value="{{$m}}" />
-        <input type="hidden" name="tab" value="{{$tab}}" />
-        <input type="hidden" name="page" value="{{$page}}" onchange="this.form.submit()"/>
-        
-        <table class="form">
+
+      <form name="listFilter" action="?" method="get"
+            onsubmit="return onSubmitFormAjax(this, null, 'list_echanges_soap')">
+        <input type="hidden" name="m" value="webservices" />
+        <input type="hidden" name="a" value="ajax_search_echanges_soap" />
+        <input type="hidden" name="page" value="{{$page}}" onchange="this.form.onsubmit()"/>
+
+        <table class="main layout">
           <tr>
-            <th class="category" colspan="4">Choix de la date d'échange</th>
-          </tr>
-          <tr>
-            <th style="width:50%">{{mb_label object=$echange_soap field="_date_min"}}</th>
-            <td class="narrow">{{mb_field object=$echange_soap field="_date_min" form="filterEchange" register=true}}</td>
-            <th class="narrow">{{mb_label object=$echange_soap field="_date_max"}}</th>
-            <td style="width:50%">{{mb_field object=$echange_soap field="_date_max" form="filterEchange" register=true}}</td>
-          </tr>
-          <tr>
-            <th class="category" colspan="4">{{tr}}filter-criteria{{/tr}}</th>
-          </tr>
-          <tr>
-            <th colspan="2">{{mb_label object=$echange_soap field="echange_soap_id"}}</th>
-            <td colspan="2">{{mb_field object=$echange_soap field="echange_soap_id"}}</td>
-          </tr>
-          <tr>
-            <th colspan="2">Types de services</th>
-            <td colspan="2">
-              <select class="str" name="service" onchange="fillSelect(this.value, 'web_service')">
-                <option value="">&mdash; Liste des types de services</option>
-								{{foreach from=$services item=_service}}
-								  <option value="{{$_service}}" {{if $service == $_service}} selected="selected"{{/if}}>
-								    {{$_service}}
-								  </option>
-								{{/foreach}}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th colspan="2">Webservices</th>
-            <td colspan="2">
-              <select class="str" id = "web_service" name="web_service" onchange="fillSelect($V(getForm('filterEchange').service), 'fonction')">
-                <option value="">&mdash; Liste des web services</option>
-              </select>
-            </td>
-          </tr>
-					 <tr>
-            <th colspan="2">Fonctions</th>
-            <td colspan="2">
-            	<select class="str" name="fonction" id="fonction">
-                <option value="">&mdash; Liste des fonctions</option>
-	            </select>
-						</td>
-				  </tr>
-          <tr>
-            <td colspan="4" style="text-align: center">
-              <button type="submit" class="search" onclick="$V(getForm('filterEchange').page, 0);">{{tr}}Filter{{/tr}}</button>
+            <td class="separator expand" onclick="MbObject.toggleColumn(this, $(this).next())"></td>
+
+            <td>
+              <table class="form">
+                <tr>
+                  <th>{{mb_label object=$echange_soap field=date_echange}}</th>
+                  <td class="text">
+                    {{mb_field object=$echange_soap field=_date_min register=true form="listFilter" prop=dateTime onchange="\$V(this.form.elements.start, 0)"}}
+                    <b>&raquo;</b>
+                    {{mb_field object=$echange_soap field=_date_max register=true form="listFilter" prop=dateTime onchange="\$V(this.form.elements.start, 0)"}}
+                  </td>
+
+                  <th>{{mb_label object=$echange_soap field="echange_soap_id"}}</th>
+                  <td>{{mb_field object=$echange_soap field="echange_soap_id"}}</td>
+
+                  <th></th>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <th>{{mb_label object=$echange_soap field="type"}}</th>
+                  <td>
+                    <select class="str" name="service"
+                            onchange="EchangeSOAP.fillSelect(this.value, 'web_service')">
+                      <option value="">&mdash; Liste des types de services</option>
+                      {{foreach from=$services item=_service}}
+                        <option value="{{$_service}}" {{if $service == $_service}} selected="selected"{{/if}}>
+                          {{$_service}}
+                        </option>
+                      {{/foreach}}
+                    </select>
+                  </td>
+
+                  <th>{{mb_label object=$echange_soap field="function_name"}}</th>
+                  <td>
+                    <select class="str" id = "web_service" name="web_service"
+                            onchange="EchangeSOAP.fillSelect($V(getForm('listFilter').service), 'fonction')">
+                      <option value="">&mdash; Liste des web services</option>
+                    </select>
+                  </td>
+
+                  <th>{{mb_label object=$echange_soap field="web_service_name"}}</th>
+                  <td>
+                    <select class="str" name="fonction" id="fonction">
+                      <option value="">&mdash; Liste des fonctions</option>
+                    </select>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="6">
+                    <button type="submit" class="search">{{tr}}Filter{{/tr}}</button>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
-        {{if $total_echange_soap != 0}}
-          {{mb_include module=system template=inc_pagination total=$total_echange_soap current=$page change_page='changePage' jumper='10'}}
-	      {{/if}}
       </form>
     </td>
   </tr>
-  
-  <tr>
-    <td class="halfPane" rowspan="3">
-      <table class="tbl">
-        <tr>
-          <th class="title" colspan="16">{{tr}}CEchangeSOAP{{/tr}}</th>
-        </tr>
-        <tr>
-          <th></th>
-          <th style="width:0.1px;"></th>
-          <th>{{mb_title object=$echange_soap field="echange_soap_id"}}</th>
-          <th>{{mb_title object=$echange_soap field="date_echange"}}</th>
-          <th>{{mb_title object=$echange_soap field="emetteur"}}</th>
-          <th>{{mb_title object=$echange_soap field="destinataire"}}</th>
-          <th>{{mb_title object=$echange_soap field="type"}}</th>
-          <th>{{mb_title object=$echange_soap field="web_service_name"}}</th>
-          <th>{{mb_title object=$echange_soap field="function_name"}}</th>
-          <th>{{mb_title object=$echange_soap field="input"}}</th>
-          <th>{{mb_title object=$echange_soap field="output"}}</th>
-          <th>{{mb_title object=$echange_soap field="response_time"}}</th>
-          <th>{{mb_title object=$echange_soap field="trace"}}</th>
-        </tr>
-        {{foreach from=$echangesSoap item=curr_echange_soap}}
-          <tbody id="echange_{{$curr_echange_soap->_id}}">
-            {{mb_include template="inc_echange_soap" object=$curr_echange_soap}}
-          </tbody>
-        {{foreachelse}}
-          <tr>
-            <td colspan="16" class="empty">
-              {{tr}}CEchangeSOAP.none{{/tr}}
-            </td>
-          </tr>
-        {{/foreach}}
-      </table>
-    </td>
-  </tr>
-  {{else}}
-    <tr>
-      <td>
-        {{mb_include template="inc_echange_soap_details"}}
-      </td>
-    </tr>
-  {{/if}}
 </table>
+
+<div id="list_echanges_soap" style="overflow: hidden"></div>

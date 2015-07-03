@@ -335,6 +335,7 @@ $locales['mod-webservices-tab-ajax_filter_web_func'] = 'Filtre sur les fonctions
 $locales['mod-webservices-tab-ajax_getFunctions_soap'] = 'Récupération des fonctions du serveur';
 $locales['mod-webservices-tab-ajax_purge_echange'] = 'Purge d\'échanges de services web';
 $locales['mod-webservices-tab-ajax_test_send_event'] = 'Test d\'envoi SOAP';
+$locales['mod-webservices-tab-ajax_view_echange_soap'] = 'Détails de l\'échange SOAP';
 $locales['mod-webservices-tab-configure'] = 'Configuration';
 $locales['mod-webservices-tab-download_echange'] = 'Téléchargement de l\'échange';
 $locales['mod-webservices-tab-soap_server'] = 'Serveur SOAP';

@@ -18,8 +18,8 @@ $now             = CMbDT::date();
 $_date_min       = CValue::getOrSession('_date_min', CMbDT::dateTime("-7 day"));
 $_date_max       = CValue::getOrSession('_date_max', CMbDT::dateTime("+1 day"));
 $service         = CValue::getOrSession("service");
-$web_service     = CValue::getOrSession("web_service"); 
-$fonction        = CValue::getOrSession("fonction"); 
+$web_service     = CValue::getOrSession("web_service");
+$fonction        = CValue::getOrSession("fonction");
 
 CValue::setSession("web_service", $web_service);
 CValue::setSession("service"    , $service);
@@ -31,7 +31,16 @@ $doc_errors_msg = $doc_errors_ack = "";
 
 // Chargement de l'échange SOAP demandé
 $echange_soap = new CEchangeSOAP();
+
 $echange_soap->load($echange_soap_id);
+if ($echange_soap->_id) {
+  $echange_soap->loadRefs();
+
+  $echange_soap->input  = unserialize($echange_soap->input);
+  if ($echange_soap->soapfault != 1) {
+    $echange_soap->output = unserialize($echange_soap->output);
+  }
+}
 
 // Récupération de la liste des echanges SOAP
 $itemEchangeSoap = new CEchangeSOAP;
@@ -60,8 +69,8 @@ if (($service && $web_service) || ($service && $_date_min && $_date_max)) {
   $forceindex[] = "date_echange";
   $echangesSoap = $itemEchangeSoap->loadList($where, $order, "$page, 20", null, null, $forceindex);
 }
-  
-  
+
+
 foreach ($echangesSoap as $_echange_soap) {
   /** @var $_echange_soap CEchangeSOAP  */
   $destinataire = $_echange_soap->destinataire;
@@ -93,4 +102,4 @@ $smarty->assign("web_service"        , $web_service);
 $smarty->assign("fonction"           , $fonction);
 $smarty->assign("services"           , $services);
 
-$smarty->display("vw_idx_echange_soap.tpl");
+$smarty->display("inc_search_echange_soap.tpl");
