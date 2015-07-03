@@ -8,7 +8,12 @@ Antecedent = {
 
     onComplete = onComplete || Prototype.emptyFunction;
     var oOptionsAjax = {
-      onComplete: onComplete
+      onComplete: function() {
+        if (window.reloadAtcd) {
+          reloadAtcd();
+        }
+        onComplete();
+      }
     };
 
     confirmDeletion(oForm, oOptions, oOptionsAjax);
@@ -16,26 +21,30 @@ Antecedent = {
 
   cancel: function(oForm, onComplete) {
     $V(oForm.annule, 1);
-    onSubmitFormAjax(oForm, {
-      onComplete: function(){
+    onSubmitFormAjax(oForm, function(){
         if (window.reloadAtcdMajeur) {
           reloadAtcdMajeur();
+        }
+        if (window.reloadAtcd) {
+          reloadAtcd();
         }
         if (onComplete) {
           onComplete();
         }
-      }
     });
     $V(oForm.annule, '');
   },
 
   restore: function(oForm, onComplete) {
     $V(oForm.annule, '0');
-    onSubmitFormAjax(oForm, {onComplete: function(){
+    onSubmitFormAjax(oForm, function() {
+      if (window.reloadAtcd) {
+        reloadAtcd();
+      }
       if (onComplete) {
         onComplete();
       }
-    }});
+    });
     $V(oForm.annule, '');
   },
 
