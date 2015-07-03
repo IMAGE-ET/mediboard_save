@@ -1,4 +1,4 @@
-<span class="view">{{$match->_view}}</span>
+<span class="view" data-sexe="{{$match->sexe}}">{{$match->_view}}</span>
 <div style="color: #999; font-size: 0.9em;">
   {{$match->adresse|replace:"\n":" &ndash; "}}
   {{if $match->cp || $match->ville}}

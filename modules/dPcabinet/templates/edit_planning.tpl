@@ -206,10 +206,13 @@
       select: "view",
       dropdown: false,
       width: "300px",
-      afterUpdateElement: function(field,selected){
-        $V(field.form.patient_id, selected.getAttribute("id").split("-")[2]);
+      afterUpdateElement: function(field, selected) {
+        $V(field.form.patient_id, selected.get("guid").split("-")[1]);
         $V(field.form.elements._patient_view, selected.down('.view').innerHTML);
         $V(field.form.elements._seek_patient, "");
+        if (form._patient_sexe) {
+          $V(form._patient_sexe, selected.down(".view").get("sexe"));
+        }
       }
     });
     Event.observe(form.elements._seek_patient, 'keydown', PatSelector.cancelFastSearch);
