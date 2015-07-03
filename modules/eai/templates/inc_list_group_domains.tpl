@@ -8,11 +8,7 @@
  * @version  SVN: $Id:$ 
  * @link     http://www.mediboard.org
 *}}
-
 <tr>
-  <td>{{mb_value object=$group_domain->_ref_group field="_view"}}</td>
-  <td>{{mb_value object=$group_domain field="object_class"}}</td>
-  <td>{{mb_value object=$group_domain field="master"}}</td>
   <td>
     <form name="editGroupDomain{{$group_domain->_guid}}" action="?m={{$m}}" method="post" onsubmit="return onSubmitFormAjax(this);">
       <input type="hidden" name="m" value="{{$m}}" />
@@ -25,14 +21,17 @@
       </button>
 
       <button class="trash notext" type="button" onclick="confirmDeletion(this.form, {
-        ajax:1, 
+        ajax:1,
         typeName:&quot;{{tr}}{{$group_domain->_class}}.one{{/tr}}&quot;,
         objName:&quot;{{$group_domain->_view|smarty:nodefaults|JSAttribute}}&quot;},
-        { onComplete: function() {          
-          Domain.refreshListGroupDomains('{{$domain->_id}}');
+        { onComplete: function() {
+        Domain.refreshListGroupDomains('{{$domain->_id}}');
         }})">
         {{tr}}Delete{{/tr}}
       </button>
-    </form> 
+    </form>
   </td>
+  <td>{{mb_value object=$group_domain->_ref_group field="_view"}}</td>
+  <td>{{mb_value object=$group_domain field="object_class"}}</td>
+  <td>{{mb_value object=$group_domain field="master"}}</td>
 </tr>

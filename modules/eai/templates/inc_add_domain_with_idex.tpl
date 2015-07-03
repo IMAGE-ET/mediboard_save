@@ -11,15 +11,15 @@
 
 <script type="text/javascript">
 
-showListTags = function(oForm) {
-  var url = new Url("eai", "ajax_show_list_tags");
-  url.addParam("object_class", $V(oForm.object_class));
-  url.requestUpdate("show_list_tags");
-}
+  showListTags = function (oForm) {
+    var url = new Url("eai", "ajax_show_list_tags");
+    url.addParam("object_class", $V(oForm.object_class));
+    url.requestUpdate("show_list_tags");
+  }
 
-Main.add(function () {
-  showListTags(getForm('addDomainWithIdex'));
-});
+  Main.add(function () {
+    showListTags(getForm('addDomainWithIdex'));
+  });
 
 </script>
 
@@ -28,12 +28,12 @@ Main.add(function () {
   <input type="hidden" name="m" value="{{$m}}" />
   <input type="hidden" name="del" value="0" />
   <input type="hidden" name="derived_from_idex" value="1" />
-  
+
   <table class="tbl form">
     <tr>
       <th colspan="2" class="title">Création d'un domaine depuis un identifiant externe</th>
     </tr>
-    
+
     <tr>
       <th style="width: 50%">Classe de l'idex</th>
       <td>
@@ -44,7 +44,7 @@ Main.add(function () {
         </select>
       </td>
     </tr>
-    
+
     <tr>
       <th style="width: 50%">Liste des tags de l'idex</th>
       <td id="show_list_tags">

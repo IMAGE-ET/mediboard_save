@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Refresh incrementer/actor EAI
+ * View interop receiver EAI
  *
  * @category EAI
  * @package  Mediboard
@@ -11,27 +10,16 @@
  * @link     http://www.mediboard.org
  */
 
-CCanDo::checkAdmin();
+CCanDo::checkRead();
 
-$domain_id = CValue::get("domain_id");
-
-// Liste des domaines
-$domain = new CDomain();
+$domain_id = CValue::getOrSession("domain_id");
+$domain    = new CDomain();
 $domain->load($domain_id);
 $domain->loadRefsGroupDomains();
-$domain->loadRefActor();
 $domain->loadRefIncrementer()->loadView();
 $domain->isMaster();
-
-// Liste des acteurs
-$actor  = new CInteropActor();
-$actors = $actor->getObjects();
-
-$groups = CGroups::loadGroups();
 
 // Création du template
 $smarty = new CSmartyDP();
 $smarty->assign("domain", $domain);
-$smarty->assign("actors", $actors);
-$smarty->assign("groups", $groups);
-$smarty->display("inc_vw_domain_actor.tpl");
+$smarty->display("inc_vw_domain_incrementer.tpl");

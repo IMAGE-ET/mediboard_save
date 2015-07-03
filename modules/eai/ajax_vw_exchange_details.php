@@ -1,12 +1,12 @@
-<?php 
+<?php
 /**
- * View exchange details 
- *  
+ * View exchange details
+ *
  * @category EAI
  * @package  Mediboard
  * @author   SARL OpenXtrem <dev@openxtrem.com>
- * @license  GNU General Public License, see http://www.gnu.org/licenses/gpl.html 
- * @version  SVN: $Id:$ 
+ * @license  GNU General Public License, see http://www.gnu.org/licenses/gpl.html
+ * @version  SVN: $Id:$
  * @link     http://www.mediboard.org
  */
 
@@ -33,7 +33,7 @@ $observations = $doc_errors_msg = $doc_errors_ack = array();
 // Chargement de l'échange demandé
 $exchange = CMbObject::loadFromGuid($exchange_guid);
 
-$exchange->loadRefs(); 
+$exchange->loadRefs();
 $exchange->loadRefsInteropActor();
 $exchange->getErrors();
 $exchange->getObservations();
@@ -53,8 +53,8 @@ switch (true) {
     if ($msg_segment_group) {
       $doc = $msg_segment_group->toXML();
       if (count($msg_segment_group->children) > $limit_size) {
-        $doc->formatOutput = true;
-        $msg_segment_group->_xml = "<pre>".CMbString::htmlEntities($doc->saveXML())."</pre>";
+        $doc->formatOutput       = true;
+        $msg_segment_group->_xml = "<pre>" . CMbString::htmlEntities($doc->saveXML()) . "</pre>";
       }
       else {
         $msg_segment_group->_xml = CMbString::highlightCode("xml", $doc->saveXML());
@@ -66,8 +66,8 @@ switch (true) {
     if ($ack_segment_group) {
       $doc = $ack_segment_group->toXML();
       if (count($ack_segment_group->children) > $limit_size) {
-        $doc->formatOutput = true;
-        $ack_segment_group->_xml = "<pre>".CMbString::htmlEntities($doc->saveXML())."</pre>";
+        $doc->formatOutput       = true;
+        $ack_segment_group->_xml = "<pre>" . CMbString::htmlEntities($doc->saveXML()) . "</pre>";
       }
       else {
         $ack_segment_group->_xml = CMbString::highlightCode("xml", $doc->saveXML());
@@ -84,11 +84,11 @@ switch (true) {
     $smarty->display("inc_exchange_xml_details.tpl");
     break;
 
-  case $exchange instanceof CExchangeDicom :
+  case $exchange instanceof CExchangeDicom:
     $exchange->decodeContent();
     $smarty->display("inc_exchange_dicom_details.tpl");
     break;
-  
+
   default:
     $exchange->guessDataType();
     $smarty->display("inc_exchange_any_details.tpl");

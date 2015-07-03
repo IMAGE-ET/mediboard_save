@@ -4,7 +4,6 @@ showIncrementer = function(incrementer_id, element){
 	if (element) {
 		element.up('tr').addUniqueClassName('selected');
 	}
-  
   var url = new Url("dPsante400", "ajax_edit_incrementer");
   url.addParam("incrementer_id", incrementer_id);
   url.requestUpdate("vw_incrementer");

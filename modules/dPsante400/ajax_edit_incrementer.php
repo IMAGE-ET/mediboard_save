@@ -21,4 +21,5 @@ $incrementer->loadMasterDomain($domain_id);
 // Création du template
 $smarty = new CSmartyDP();
 $smarty->assign("incrementer" , $incrementer);
+$smarty->assign("domain_id" , $domain_id);
 $smarty->display("inc_edit_incrementer.tpl");
