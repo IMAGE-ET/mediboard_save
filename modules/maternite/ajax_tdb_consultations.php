@@ -30,6 +30,11 @@ $ljoin["plageconsult"]        = "plageconsult.plageconsult_id = consultation.pla
 $ljoin["users_mediboard"]     = "plageconsult.chir_id = users_mediboard.user_id";
 $ljoin["functions_mediboard"] = "functions_mediboard.function_id = users_mediboard.function_id";
 
+$curr_user = CMediusers::get();
+if ($curr_user->isPraticien() || $curr_user->isSageFemme()) {
+  $where["plageconsult.chir_id"] = "= '$curr_user->_id'";
+}
+
 /** @var CConsultation[] $listConsults */
 $listConsults = $consultation->loadList($where, "heure ASC", null, null, $ljoin);
 
