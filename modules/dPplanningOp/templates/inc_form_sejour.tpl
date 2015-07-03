@@ -325,6 +325,12 @@ function updateListCPI(form, callback) {
 
     {{if $sejour->charge_id}}
       $V(field, "{{$sejour->charge_id}}", true);
+    {{else}}
+      if (field.onchange) {
+        // Trigger onchange to tell the form checker that the fiels has a value, and to set sejour type
+        field.onchange();
+      }
+      field.fire("ui:change");
     {{/if}}
 
     if (callback) {
