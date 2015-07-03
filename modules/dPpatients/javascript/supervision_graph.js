@@ -105,7 +105,7 @@ SupervisionGraph = {
       url.addParam("supervision_graph_axis_id", axis_id);
     }
 
-    url.requestModal(400, 300);
+    url.requestModal(400, 400);
 
     return false;
   },

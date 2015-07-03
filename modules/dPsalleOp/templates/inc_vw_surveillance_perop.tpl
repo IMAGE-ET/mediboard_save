@@ -584,7 +584,7 @@ printSurveillance = function(operation_id) {
                       data-value_unit_id="{{$_graph->value_unit_id}}">
                   -
                 </span>
-                <span style="font-size: 1.2em">{{$_graph->_ref_value_unit}}</span>
+                <span style="font-size: 1.2em">{{$_graph->_ref_value_unit->label}}</span>
               </div>
             </div>
             <hr />

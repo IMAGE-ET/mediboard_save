@@ -26,12 +26,12 @@ ColorSelector.init = function() {
     
     <tr>
       <th>{{mb_label object=$series field=value_type_id}}</th>
-      <td>{{mb_field object=$series field=value_type_id autocomplete="true,1,50,true,true" form="edit-supervision-graph-series"}}</td>
+      <td>{{mb_field object=$series field=value_type_id autocomplete="true,1,50,true,true" form="edit-supervision-graph-series" size=40}}</td>
     </tr>
     
     <tr>
       <th>{{mb_label object=$series field=value_unit_id}}</th>
-      <td>{{mb_field object=$series field=value_unit_id autocomplete="true,1,50,true,true" form="edit-supervision-graph-series"}}</td>
+      <td>{{mb_field object=$series field=value_unit_id autocomplete="true,1,50,true,true" form="edit-supervision-graph-series" size=40}}</td>
     </tr>
 
     <tr>
