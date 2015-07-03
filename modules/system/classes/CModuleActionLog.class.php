@@ -172,9 +172,6 @@ class CModuleActionLog extends CStoredObject {
 
     // Remove the useless temporary buffer
     unlink($tmpbuffer);
-    $buffered_count = count($buffered_logs);
-    $assembled_count = count($assembled_logs);
-    mbLog("'$buffered_count' logs buffered, '$assembled_count' logs assembled", $class);
   }
 
 }
