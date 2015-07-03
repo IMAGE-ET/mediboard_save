@@ -249,13 +249,17 @@ Admissions = {
       $V(form.etablissement_sortie_id_autocomplete_view, "");
       if (dest_required_for_transfert) {
         form.destination.removeClassName('notNull');
-        form.destination.getLabel().removeClassName('notNull');
+        form.destination.getLabel().removeClassName('notNull')
+                                   .removeClassName('notNullOK');
       }
     }
     else {
       if (dest_required_for_transfert) {
         form.destination.addClassName('notNull');
         form.destination.getLabel().addClassName('notNull');
+        form.destination.observe("change", notNullOK)
+                        .observe("keyup",  notNullOK)
+                        .observe("ui:change", notNullOK);
       }
     }
 
@@ -272,6 +276,9 @@ Admissions = {
     if (mode_sortie === "deces") {
       label_deces.addClassName("notNull");
       form._date_deces.addClassName("notNull");
+      form._date_deces.observe("change", notNullOK)
+                      .observe("keyup",  notNullOK)
+                      .observe("ui:change", notNullOK);
       if (!$V(form._date_deces)) {
         $V(form._date_deces, $V(form.sortie_reelle));
         $V(form._date_deces_da, $V(form.sortie_reelle_da));
