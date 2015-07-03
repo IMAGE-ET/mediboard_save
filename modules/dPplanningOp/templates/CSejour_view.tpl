@@ -103,7 +103,7 @@
       {{if !$sejour->sortie_reelle && $sejour->entree_reelle}}
         <button class="tick" type="button"
                 onclick='Admissions.validerSortie("{{$sejour->_id}}", true);'>
-          Valider la sortie
+          Autoriser la sortie
         </button>
       {{/if}}
 
@@ -152,7 +152,7 @@
           {{else}}
             onclick="ModeleEtiquette.chooseModele('{{$sejour->_class}}', '{{$sejour->_id}}', '{{$unique_id}}')"
           {{/if}}>
-          {{tr}}CModeleEtiquette.print_labels{{/tr}}
+          {{tr}}CModeleEtiquette-court{{/tr}}
         </button>
       {{/if}}
       
