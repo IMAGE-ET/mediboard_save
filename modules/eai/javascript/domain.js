@@ -53,6 +53,8 @@ Domain = {
     new Url("eai", "ajax_refresh_list_group_domains")
       .addParam("domain_id", domain_id)
       .requestUpdate("vw_list_group_domains");
+
+    Domain.refreshListDomains();
   },
 
   refreshListIncrementerActor: function (domain_id) {
